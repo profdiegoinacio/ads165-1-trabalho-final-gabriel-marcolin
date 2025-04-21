@@ -1,4 +1,4 @@
-package com.example.dto;
+package com.example.backend.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;

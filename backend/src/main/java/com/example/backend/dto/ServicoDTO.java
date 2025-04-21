@@ -1,4 +1,4 @@
-package com.example.dto;
+package com.example.backend.dto;
 
 import jakarta.validation.constraints.*;
 
@@ -23,7 +23,7 @@ public class ServicoDTO {
     private Double preco;
 
     @NotBlank(message = "O telefone de contato não pode ser nulo.")
-    @Max(value = 11, message = "O telefone inserido é muito grande")
+    @Size(max = 11, message = "O telefone inserido é muito grande")
     private String telefone;
 
     public ServicoDTO(Long id, String titulo, String descricao, String categoria, Double preco, String telefone) {
