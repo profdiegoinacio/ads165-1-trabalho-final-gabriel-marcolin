@@ -20,7 +20,7 @@ public class UsuarioDTO {
     @Size(min = 3, max = 50, message = "A senha deve ter entre 3 e 50 caracteres.")
     private String senha;
 
-    @Max(value = 11, message = "O telefone inserido é muito grande")
+    @Size(max = 11, message = "O telefone inserido é muito grande")
     private String telefone;
 
     public UsuarioDTO(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {
