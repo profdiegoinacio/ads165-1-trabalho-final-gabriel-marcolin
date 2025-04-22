@@ -1,0 +1,110 @@
+package com.example.backend.controller;
+
+import com.example.backend.dto.UsuarioDTO;
+import com.example.backend.service.UsuarioService;
+import com.example.backend.utils.GeradorDeId;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+    private List<UsuarioDTO> usuarios = new ArrayList<>();
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @PostConstruct
+    public void initUsuarios() {
+        usuarios.add(new UsuarioDTO(
+                GeradorDeId.gerarId("Usuarios"),
+                'C',
+                "João da Silva",
+                "joao@email.com",
+                "senha123",
+                "54999881234"
+        ));
+        usuarios.add(new UsuarioDTO(
+                GeradorDeId.gerarId("Usuarios"),
+                'P',
+                "Maria Souza",
+                "maria@email.com",
+                "senha456",
+                "54999773344"
+        ));
+        usuarios.add(new UsuarioDTO(
+                GeradorDeId.gerarId("Usuarios"),
+                'C',
+                "Carlos Lima",
+                "carlos@email.com",
+                "senha789",
+                "54999665522"
+        ));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioDTO>> buscarUsuarios(
+            @RequestParam(name = "nome", required = false) String nome,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "tipo", required = false) Character tipo,
+            @RequestParam(name = "ordenarPor", defaultValue = "id") String ordenarPor,
+            @RequestParam(name = "ordem", defaultValue = "asc") String ordem) {
+
+        List<UsuarioDTO> usuariosFiltrados = usuarioService.filtrarUsuarios(usuarios, nome, email, tipo);
+        usuariosFiltrados = usuarioService.ordenarUsuarios(usuariosFiltrados, ordenarPor, ordem);
+        return ResponseEntity.ok(usuariosFiltrados);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> buscarUsuarioPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.getUsuarioById(usuarios, id));
+    }
+
+    @PostMapping
+    public ResponseEntity<UsuarioDTO> criarUsuario(@Valid @RequestBody UsuarioDTO usuario) {
+        UsuarioDTO novoUsuario = usuarioService.criarUsuario(usuario);
+        usuarios.add(novoUsuario);
+        return ResponseEntity.ok(novoUsuario);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
+        if (usuarios.stream().noneMatch(u -> u.getId().equals(id))) {
+            return ResponseEntity.notFound().build();
+        }
+        usuarios.remove(usuarioService.getUsuarioById(usuarios, id));
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<UsuarioDTO> atualizarUsuario(@Valid @RequestBody UsuarioDTO usuario) {
+        if (usuarios.stream().noneMatch(u -> u.getId().equals(usuario.getId()))) {
+            return ResponseEntity.notFound().build();
+        }
+        UsuarioDTO usuarioAtualizado = usuarioService.atualizarUsuario(usuario);
+        usuarios.removeIf(u -> u.getId().equals(usuario.getId()));
+        usuarios.add(usuarioAtualizado);
+        usuarios = usuarioService.ordenarUsuarios(usuarios, "id", "asc");
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> atualizarParcialmenteUsuario(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+        try {
+            UsuarioDTO atualizado = usuarioService.atualizarParcialmente(usuarios, id, fields);
+            return ResponseEntity.ok(atualizado);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+}
