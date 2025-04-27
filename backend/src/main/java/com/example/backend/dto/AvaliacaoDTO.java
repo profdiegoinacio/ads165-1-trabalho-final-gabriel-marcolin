@@ -13,7 +13,7 @@ public class AvaliacaoDTO {
 
     @NotNull(message = "O preço não pode ser nulo.")
     @Min(value = 1, message = "A nota deve ser maior ou igual a 1.")
-    @Max(value=10, message = "A nota deve ser menor ou igual a 10")
+    @Max(value=5, message = "A nota deve ser menor ou igual a 5")
     private int nota;
 
     private String comentario;

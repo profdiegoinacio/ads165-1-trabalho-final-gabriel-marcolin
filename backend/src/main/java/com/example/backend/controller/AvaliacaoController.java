@@ -30,7 +30,7 @@ public class AvaliacaoController {
                 GeradorDeId.gerarId("Avaliacoes"),
                 1L,
                 3L,
-                8,
+                5,
                 "Ótimo serviço!",
                 new Date()
         ));
@@ -38,7 +38,7 @@ public class AvaliacaoController {
                 GeradorDeId.gerarId("Avaliacoes"),
                 2L,
                 3L,
-                9,
+                4,
                 "Muito bom!",
                 new Date()
         ));
@@ -46,7 +46,7 @@ public class AvaliacaoController {
                 GeradorDeId.gerarId("Avaliacoes"),
                 1L,
                 1L,
-                6,
+                2,
                 "Foi razoável.",
                 new Date()
         ));
