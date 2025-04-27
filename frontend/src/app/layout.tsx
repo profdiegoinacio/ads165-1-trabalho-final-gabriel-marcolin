@@ -22,6 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
@@ -32,3 +33,60 @@ export default function RootLayout({
     </html>
   );
 }
+
+
+
+/*Posteriormente, quando fizermos a integração, trocar para:
+
+
+
+
+"use client";
+
+import { Geist, Geist_Mono } from "next/font/google";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import "./globals.css";
+
+const geistSans = Geist({
+    variable: "--font-geist-sans",
+    subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
+});
+
+export default function RootLayout({
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode;
+}>) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const [usuarioLogado, setUsuarioLogado] = useState<any>(null);
+
+    useEffect(() => {
+        const userData = localStorage.getItem("usuarioLogado");
+
+        if (!userData && pathname !== "/login") {
+            router.push("/login");
+        } else if (userData) {
+            setUsuarioLogado(JSON.parse(userData));
+        }
+    }, [pathname, router]);
+
+    if (!usuarioLogado && pathname !== "/login") {
+        return null;
+    }
+
+    return (
+        <html lang="en">
+        <body className={${geistSans.variable} ${geistMono.variable} antialiased}>
+        {children}
+        </body>
+        </html>
+    );
+}
+* */
