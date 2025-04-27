@@ -6,6 +6,7 @@ import com.example.backend.utils.GeradorDeId;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,6 +106,16 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PostMapping("/{usuarioId}/contratar/{servicoId}")
+    public ResponseEntity<UsuarioDTO> contratarServico(@PathVariable Long usuarioId, @PathVariable Long servicoId) {
+        try {
+            UsuarioDTO usuarioAtualizado = usuarioService.adicionarServicoContratado(usuarios, usuarioId, servicoId);
+            return ResponseEntity.ok(usuarioAtualizado);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

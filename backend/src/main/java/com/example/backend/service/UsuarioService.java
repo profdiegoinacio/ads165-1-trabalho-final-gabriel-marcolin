@@ -116,4 +116,17 @@ public class UsuarioService {
 
         return usuario;
     }
+
+    public UsuarioDTO adicionarServicoContratado(List<UsuarioDTO> usuarios, Long usuarioId, Long servicoId) {
+        UsuarioDTO usuario = usuarios.stream()
+                .filter(u -> u.getId().equals(usuarioId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+
+        if (!usuario.getServicosContratados().contains(servicoId)) {
+            usuario.getServicosContratados().add(servicoId);
+        }
+
+        return usuario;
+    }
 }

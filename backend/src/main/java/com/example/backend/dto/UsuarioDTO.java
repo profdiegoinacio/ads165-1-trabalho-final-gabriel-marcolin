@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 public class UsuarioDTO {
     private Long id;
     private char tipoUsuario;
@@ -22,6 +24,8 @@ public class UsuarioDTO {
 
     @Size(max = 11, message = "O telefone inserido é muito grande")
     private String telefone;
+
+    private List<Long> servicosContratados;
 
     public UsuarioDTO(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {
         this.id = id;
@@ -90,5 +94,13 @@ public class UsuarioDTO {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public List<Long> getServicosContratados() {
+        return servicosContratados;
+    }
+
+    public void setServicosContratados(List<Long> servicosContratados) {
+        this.servicosContratados = servicosContratados;
     }
 }
