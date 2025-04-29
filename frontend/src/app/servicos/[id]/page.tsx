@@ -18,15 +18,35 @@ export default function DetalhesServico() {
         servicosContratados: [1, 3]
     };
 
+    /*
     const servicosMock = [
         { id: 1, nome: "Serviço 1", descricao: "Descrição completa do Serviço 1", usuario: { nome: "João" }, avaliacaoMedia: 4.5 },
         { id: 2, nome: "Serviço 2", descricao: "Descrição completa do Serviço 2", usuario: { nome: "Maria" }, avaliacaoMedia: 3.8 },
         { id: 3, nome: "Serviço 3", descricao: "Descrição completa do Serviço 3", usuario: { nome: "Carlos" }, avaliacaoMedia: 4.0 }
     ];
 
+*/
     useEffect(() => {
-        const encontrado = servicosMock.find(s => s.id === Number(id));
-        setServico(encontrado);
+        /*const encontrado = servicosMock.find(s => s.id === Number(id));
+        setServico(encontrado);*/
+        async function fetchServicos() {
+            try {
+                const resposta = await fetch(`http://localhost:8080/servicos/${id}`)
+                if(!resposta.ok) {
+                    throw new Error("Erro ao buscar serviços");
+                }
+
+                const data = await resposta.json();
+                setServico(data);
+            } catch{
+                console.error("Erro ao buscar serviço:", );
+                setServico(null);
+            }
+        }
+
+        if(id){
+            fetchServicos();
+        }
     }, [id]);
 
     if (!servico) {
@@ -53,12 +73,14 @@ export default function DetalhesServico() {
 
     return (
         <div className="p-6 max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6 text-center">{servico.nome}</h1>
+            <h1 className="text-3xl font-bold mb-6 text-center">{servico.titulo}</h1>
 
             <div className="bg-white p-6 rounded-2xl shadow space-y-4">
                 <p><span className="font-semibold">Descrição:</span> {servico.descricao}</p>
-                <p><span className="font-semibold">Criado por:</span> {servico.usuario.nome}</p>
-                <p><span className="font-semibold">Avaliação média:</span> {servico.avaliacaoMedia.toFixed(1)}</p>
+                <p><span className="font-semibold">Categoria:</span> {servico.categoria}</p>
+                <p><span className="font-semibold">Preço:</span> {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(servico.preco)}</p>
+                <p><span className="font-semibold">Telefone:</span> {servico.telefone.toString()}</p>
+                <p><span className="font-semibold">Criado por:</span> {servico.usuario}</p>
 
                 <button
                     onClick={handleContratar}
