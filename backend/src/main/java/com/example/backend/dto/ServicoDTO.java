@@ -26,13 +26,16 @@ public class ServicoDTO {
     @Size(max = 11, message = "O telefone inserido é muito grande")
     private String telefone;
 
-    public ServicoDTO(Long id, String titulo, String descricao, String categoria, Double preco, String telefone) {
+    private Long idUsuario;
+
+    public ServicoDTO(Long id, String titulo, String descricao, String categoria, Double preco, String telefone, Long idUsuario) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
         this.telefone = telefone;
+        this.idUsuario = idUsuario;
     }
 
     public ServicoDTO() {
@@ -85,4 +88,13 @@ public class ServicoDTO {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
 }

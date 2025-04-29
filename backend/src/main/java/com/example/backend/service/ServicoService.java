@@ -48,7 +48,8 @@ public class ServicoService {
                 servico.getDescricao(),
                 servico.getCategoria(),
                 servico.getPreco(),
-                servico.getTelefone()
+                servico.getTelefone(),
+                servico.getIdUsuario()
         );
         return servicoCriado;
     }
@@ -109,6 +110,12 @@ public class ServicoService {
                         throw new IllegalArgumentException("O campo 'telefone' deve ser uma String.");
                     }
                     servico.setTelefone((String) value);
+                }
+                case "idUsuario" -> {
+                    if (!(value instanceof Long)) {
+                        throw new IllegalArgumentException("O campo 'idUsuario' deve ser Long.");
+                    }
+                    servico.setIdUsuario((Long) value);
                 }
                 default -> throw new IllegalArgumentException("Campo inválido: " + key);
             }

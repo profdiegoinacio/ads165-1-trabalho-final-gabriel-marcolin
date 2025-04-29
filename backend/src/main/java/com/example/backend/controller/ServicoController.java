@@ -21,6 +21,8 @@ public class ServicoController {
     @Autowired
     private ServicoService servicoService;
 
+    //DTO são temporário, comparar com as coisas
+    //Criar as entidades pras listas, por exemplo
     @PostConstruct
     public void initServicos(){
         servicos.add(new ServicoDTO(
@@ -29,7 +31,8 @@ public class ServicoController {
                 "Limpo o jardim da sua casa por um preço acessível, trabalho de segunda à sábado e atendo a região de passo fundo",
                 "Limpeza",
                 100.0,
-                "54999787472"
+                "54999787472",
+                1L
         ));
 
         servicos.add(new ServicoDTO(
@@ -38,7 +41,8 @@ public class ServicoController {
                 "Ofereço reforço escolar em matemática para ensino fundamental e médio. Aulas presenciais ou online com material incluso.",
                 "Educação",
                 80.0,
-                "54999881234"
+                "54999881234",
+                2L
         ));
 
         servicos.add(new ServicoDTO(
@@ -47,7 +51,8 @@ public class ServicoController {
                 "Serviço de manutenção e formatação de computadores e notebooks. Atendimento rápido e com garantia.",
                 "Tecnologia",
                 120.0,
-                "54999674321"
+                "54999674321",
+                3L
         ));
     }
 
