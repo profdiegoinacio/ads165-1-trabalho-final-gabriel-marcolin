@@ -1,11 +1,11 @@
-package com.example.backend.dto;
+package com.example.backend.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-/// Não entendi muito bem como usar os DTOs. Criei eles mas verificarei com o professor na segunda sobre seu uso
-public class UsuarioDTO {
+
+public class Usuario {
     private Long id;
     private char tipoUsuario;
 
@@ -26,7 +26,7 @@ public class UsuarioDTO {
 
     private List<Long> servicosContratados;
 
-    public UsuarioDTO(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {
+    public Usuario(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {
         this.id = id;
         this.tipoUsuario = tipoUsuario;
         this.nome = nome;
@@ -36,7 +36,7 @@ public class UsuarioDTO {
     }
 
     //Construtor sem o telefone
-    public UsuarioDTO(Long id, char tipoUsuario, String nome, String email, String senha) {
+    public Usuario(Long id, char tipoUsuario, String nome, String email, String senha) {
         this.id = id;
         this.tipoUsuario = tipoUsuario;
         this.nome = nome;
@@ -44,7 +44,7 @@ public class UsuarioDTO {
         this.senha = senha;
     }
 
-    public UsuarioDTO() {
+    public Usuario() {
     }
 
     public Long getId() {

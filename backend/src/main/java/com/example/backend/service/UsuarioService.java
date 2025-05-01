@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.UsuarioDTO;
+import com.example.backend.domain.Usuario;
 import com.example.backend.utils.GeradorDeId;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioService {
 
-    public List<UsuarioDTO> filtrarUsuarios(List<UsuarioDTO> usuarios, String nome, String email, Character tipo) {
+    public List<Usuario> filtrarUsuarios(List<Usuario> usuarios, String nome, String email, Character tipo) {
         return usuarios.stream()
                 .filter(u -> nome == null || u.getNome().toLowerCase().contains(nome.toLowerCase()))
                 .filter(u -> email == null || u.getEmail().toLowerCase().contains(email.toLowerCase()))
@@ -20,7 +20,7 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public List<UsuarioDTO> ordenarUsuarios(List<UsuarioDTO> usuarios, String ordenarPor, String ordem) {
+    public List<Usuario> ordenarUsuarios(List<Usuario> usuarios, String ordenarPor, String ordem) {
         return usuarios.stream()
                 .sorted((u1, u2) -> {
                     int comparison = switch (ordenarPor) {
@@ -35,15 +35,15 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public UsuarioDTO getUsuarioById(List<UsuarioDTO> usuarios, Long id) {
+    public Usuario getUsuarioById(List<Usuario> usuarios, Long id) {
         return usuarios.stream()
                 .filter(u -> u.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + id));
     }
 
-    public UsuarioDTO criarUsuario(UsuarioDTO usuario) {
-        UsuarioDTO usuarioCriado = new UsuarioDTO(
+    public Usuario criarUsuario(Usuario usuario) {
+        Usuario usuarioCriado = new Usuario(
                 GeradorDeId.gerarId("Usuarios"),
                 usuario.getTipoUsuario(),
                 usuario.getNome(),
@@ -54,8 +54,8 @@ public class UsuarioService {
         return usuarioCriado;
     }
 
-    public UsuarioDTO atualizarUsuario(UsuarioDTO usuario) {
-        UsuarioDTO usuarioAtualizado = new UsuarioDTO();
+    public Usuario atualizarUsuario(Usuario usuario) {
+        Usuario usuarioAtualizado = new Usuario();
         usuarioAtualizado.setId(usuario.getId());
         usuarioAtualizado.setTipoUsuario(usuario.getTipoUsuario());
         usuarioAtualizado.setNome(usuario.getNome());
@@ -65,8 +65,8 @@ public class UsuarioService {
         return usuarioAtualizado;
     }
 
-    public UsuarioDTO atualizarParcialmente(List<UsuarioDTO> usuarios, Long id, Map<String, Object> fields) {
-        UsuarioDTO usuario = usuarios.stream()
+    public Usuario atualizarParcialmente(List<Usuario> usuarios, Long id, Map<String, Object> fields) {
+        Usuario usuario = usuarios.stream()
                 .filter(u -> u.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + id));
@@ -117,8 +117,8 @@ public class UsuarioService {
         return usuario;
     }
 
-    public UsuarioDTO adicionarServicoContratado(List<UsuarioDTO> usuarios, Long usuarioId, Long servicoId) {
-        UsuarioDTO usuario = usuarios.stream()
+    public Usuario adicionarServicoContratado(List<Usuario> usuarios, Long usuarioId, Long servicoId) {
+        Usuario usuario = usuarios.stream()
                 .filter(u -> u.getId().equals(usuarioId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));

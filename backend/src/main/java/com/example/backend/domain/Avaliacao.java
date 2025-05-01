@@ -1,12 +1,12 @@
-package com.example.backend.dto;
+package com.example.backend.domain;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
-/// Não entendi muito bem como usar os DTOs. Criei eles mas verificarei com o professor na segunda sobre seu uso
-public class AvaliacaoDTO {
+
+public class Avaliacao {
     private Long id;
     private Long servicoId;
     private Long usuarioId;
@@ -19,14 +19,14 @@ public class AvaliacaoDTO {
     private String comentario;
     private Date data;
 
-    public AvaliacaoDTO(Long id, Long servicoId, Long usuarioId, int nota) {
+    public Avaliacao(Long id, Long servicoId, Long usuarioId, int nota) {
         this.id = id;
         this.servicoId = servicoId;
         this.usuarioId = usuarioId;
         this.nota = nota;
     }
 
-    public AvaliacaoDTO(Long id, Long servicoId, Long usuarioId, int nota, String comentario, Date data) {
+    public Avaliacao(Long id, Long servicoId, Long usuarioId, int nota, String comentario, Date data) {
         this.id = id;
         this.servicoId = servicoId;
         this.usuarioId = usuarioId;
@@ -35,7 +35,7 @@ public class AvaliacaoDTO {
         this.data = data;
     }
 
-    public AvaliacaoDTO() {
+    public Avaliacao() {
     }
 
     public Long getId() {

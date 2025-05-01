@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.AvaliacaoDTO;
+import com.example.backend.domain.Avaliacao;
 import com.example.backend.utils.GeradorDeId;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class AvaliacaoService {
 
-    public List<AvaliacaoDTO> filtrarAvaliacoes(List<AvaliacaoDTO> avaliacoes, Long servicoId, Long usuarioId, Integer notaMinima) {
+    public List<Avaliacao> filtrarAvaliacoes(List<Avaliacao> avaliacoes, Long servicoId, Long usuarioId, Integer notaMinima) {
         return avaliacoes.stream()
                 .filter(a -> servicoId == null || a.getServicoId().equals(servicoId))
                 .filter(a -> usuarioId == null || a.getUsuarioId().equals(usuarioId))
@@ -21,7 +21,7 @@ public class AvaliacaoService {
                 .collect(Collectors.toList());
     }
 
-    public List<AvaliacaoDTO> ordenarAvaliacoes(List<AvaliacaoDTO> avaliacoes, String ordenarPor, String ordem) {
+    public List<Avaliacao> ordenarAvaliacoes(List<Avaliacao> avaliacoes, String ordenarPor, String ordem) {
         return avaliacoes.stream()
                 .sorted((a1, a2) -> {
                     int comparison = switch (ordenarPor) {
@@ -38,15 +38,15 @@ public class AvaliacaoService {
                 .collect(Collectors.toList());
     }
 
-    public AvaliacaoDTO getAvaliacaoById(List<AvaliacaoDTO> avaliacoes, Long id) {
+    public Avaliacao getAvaliacaoById(List<Avaliacao> avaliacoes, Long id) {
         return avaliacoes.stream()
                 .filter(avaliacao -> avaliacao.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Avaliação não encontrada com o ID: " + id));
     }
 
-    public AvaliacaoDTO criarAvaliacao(AvaliacaoDTO avaliacao) {
-        return new AvaliacaoDTO(
+    public Avaliacao criarAvaliacao(Avaliacao avaliacao) {
+        return new Avaliacao(
                 GeradorDeId.gerarId("Avaliacoes"),
                 avaliacao.getServicoId(),
                 avaliacao.getUsuarioId(),
@@ -56,8 +56,8 @@ public class AvaliacaoService {
         );
     }
 
-    public AvaliacaoDTO atualizarAvaliacao(AvaliacaoDTO avaliacao) {
-        AvaliacaoDTO atualizada = new AvaliacaoDTO();
+    public Avaliacao atualizarAvaliacao(Avaliacao avaliacao) {
+        Avaliacao atualizada = new Avaliacao();
         atualizada.setId(avaliacao.getId());
         atualizada.setServicoId(avaliacao.getServicoId());
         atualizada.setUsuarioId(avaliacao.getUsuarioId());
@@ -67,8 +67,8 @@ public class AvaliacaoService {
         return atualizada;
     }
 
-    public AvaliacaoDTO atualizarParcialmente(List<AvaliacaoDTO> avaliacoes, Long id, Map<String, Object> fields) {
-        AvaliacaoDTO avaliacao = avaliacoes.stream()
+    public Avaliacao atualizarParcialmente(List<Avaliacao> avaliacoes, Long id, Map<String, Object> fields) {
+        Avaliacao avaliacao = avaliacoes.stream()
                 .filter(a -> a.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Avaliação não encontrada com o ID: " + id));

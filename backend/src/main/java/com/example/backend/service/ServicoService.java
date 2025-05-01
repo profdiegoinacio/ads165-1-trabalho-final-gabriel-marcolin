@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.ServicoDTO;
+import com.example.backend.domain.Servico;
 import com.example.backend.utils.GeradorDeId;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ServicoService {
-    public List<ServicoDTO> filtrarServicos(List<ServicoDTO>servicos,String titulo, Double precoMinimo, List<String> categorias) {
+    public List<Servico> filtrarServicos(List<Servico>servicos, String titulo, Double precoMinimo, List<String> categorias) {
         return servicos.stream()
                 .filter(s -> titulo == null || s.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
                 .filter(s -> precoMinimo == null || s.getPreco() >= precoMinimo)
@@ -21,7 +21,7 @@ public class ServicoService {
                 .collect(Collectors.toList());
     }
 
-    public List<ServicoDTO> ordenarServicos(List<ServicoDTO> servicos, String ordenarPor, String ordem) {
+    public List<Servico> ordenarServicos(List<Servico> servicos, String ordenarPor, String ordem) {
         return servicos.stream()
                 .sorted((s1, s2) -> {
                     int comparison = switch (ordenarPor) {
@@ -34,15 +34,15 @@ public class ServicoService {
                 .collect(Collectors.toList());
     }
 
-    public ServicoDTO getServicoById(List<ServicoDTO> servicos, Long id) {
+    public Servico getServicoById(List<Servico> servicos, Long id) {
         return servicos.stream()
                 .filter(servico -> servico.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Serviço não encontrado com o ID: " + id));
     }
 
-    public ServicoDTO criarServico(ServicoDTO servico) {
-        ServicoDTO servicoCriado = new ServicoDTO(
+    public Servico criarServico(Servico servico) {
+        Servico servicoCriado = new Servico(
                 GeradorDeId.gerarId("Servicos"),
                 servico.getTitulo(),
                 servico.getDescricao(),
@@ -54,8 +54,8 @@ public class ServicoService {
         return servicoCriado;
     }
 
-    public ServicoDTO atualizarServico(ServicoDTO servico) {
-        ServicoDTO servicoAtualizado = new ServicoDTO();
+    public Servico atualizarServico(Servico servico) {
+        Servico servicoAtualizado = new Servico();
         servicoAtualizado.setId(servico.getId());
         servicoAtualizado.setTitulo(servico.getTitulo());
         servicoAtualizado.setDescricao(servico.getDescricao());
@@ -66,8 +66,8 @@ public class ServicoService {
     }
 
 
-    public ServicoDTO atualizarParcialmente(List<ServicoDTO> servicos, Long id, Map<String, Object> fields) {
-        ServicoDTO servico = servicos.stream()
+    public Servico atualizarParcialmente(List<Servico> servicos, Long id, Map<String, Object> fields) {
+        Servico servico = servicos.stream()
                 .filter(s -> s.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Serviço não encontrado com o ID: " + id));

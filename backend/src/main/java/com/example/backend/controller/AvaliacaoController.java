@@ -1,6 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.AvaliacaoDTO;
+import com.example.backend.domain.Avaliacao;
 import com.example.backend.service.AvaliacaoService;
 import com.example.backend.utils.GeradorDeId;
 import jakarta.annotation.PostConstruct;
@@ -19,14 +19,14 @@ import java.util.NoSuchElementException;
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
 
-    private List<AvaliacaoDTO> avaliacoes = new ArrayList<>();
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @Autowired
     private AvaliacaoService avaliacaoService;
 
     @PostConstruct
     public void initAvaliacoes() {
-        avaliacoes.add(new AvaliacaoDTO(
+        avaliacoes.add(new Avaliacao(
                 GeradorDeId.gerarId("Avaliacoes"),
                 1L,
                 3L,
@@ -34,7 +34,7 @@ public class AvaliacaoController {
                 "Ótimo serviço!",
                 new Date()
         ));
-        avaliacoes.add(new AvaliacaoDTO(
+        avaliacoes.add(new Avaliacao(
                 GeradorDeId.gerarId("Avaliacoes"),
                 2L,
                 3L,
@@ -42,7 +42,7 @@ public class AvaliacaoController {
                 "Muito bom!",
                 new Date()
         ));
-        avaliacoes.add(new AvaliacaoDTO(
+        avaliacoes.add(new Avaliacao(
                 GeradorDeId.gerarId("Avaliacoes"),
                 1L,
                 1L,
@@ -53,26 +53,26 @@ public class AvaliacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AvaliacaoDTO>> buscarAvaliacoes(
+    public ResponseEntity<List<Avaliacao>> buscarAvaliacoes(
             @RequestParam(name = "servicoId", required = false) Long servicoId,
             @RequestParam(name = "usuarioId", required = false) Long usuarioId,
             @RequestParam(name = "notaMinima", required = false) Integer notaMinima,
             @RequestParam(name = "ordenarPor", defaultValue = "id") String ordenarPor,
             @RequestParam(name = "ordem", defaultValue = "desc") String ordem) {
 
-        List<AvaliacaoDTO> Avaliacoesfiltradas = avaliacaoService.filtrarAvaliacoes(avaliacoes, servicoId, usuarioId, notaMinima);
+        List<Avaliacao> Avaliacoesfiltradas = avaliacaoService.filtrarAvaliacoes(avaliacoes, servicoId, usuarioId, notaMinima);
         Avaliacoesfiltradas = avaliacaoService.ordenarAvaliacoes(Avaliacoesfiltradas, ordenarPor, ordem);
         return ResponseEntity.ok(Avaliacoesfiltradas);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AvaliacaoDTO> buscarAvaliacaoPorId(@PathVariable Long id) {
+    public ResponseEntity<Avaliacao> buscarAvaliacaoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(avaliacaoService.getAvaliacaoById(avaliacoes, id));
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoDTO> criarAvaliacao(@Valid @RequestBody AvaliacaoDTO avaliacao) {
-        AvaliacaoDTO nova = avaliacaoService.criarAvaliacao(avaliacao);
+    public ResponseEntity<Avaliacao> criarAvaliacao(@Valid @RequestBody Avaliacao avaliacao) {
+        Avaliacao nova = avaliacaoService.criarAvaliacao(avaliacao);
         avaliacoes.add(nova);
         return ResponseEntity.ok(nova);
     }
@@ -87,11 +87,11 @@ public class AvaliacaoController {
     }
 
     @PutMapping
-    public ResponseEntity<AvaliacaoDTO> atualizarAvaliacao(@Valid @RequestBody AvaliacaoDTO avaliacao) {
+    public ResponseEntity<Avaliacao> atualizarAvaliacao(@Valid @RequestBody Avaliacao avaliacao) {
         if (avaliacoes.stream().noneMatch(a -> a.getId().equals(avaliacao.getId()))) {
             return ResponseEntity.notFound().build();
         }
-        AvaliacaoDTO atualizada = avaliacaoService.atualizarAvaliacao(avaliacao);
+        Avaliacao atualizada = avaliacaoService.atualizarAvaliacao(avaliacao);
         avaliacoes.removeIf(a -> a.getId().equals(avaliacao.getId()));
         avaliacoes.add(atualizada);
         avaliacoes = avaliacaoService.ordenarAvaliacoes(avaliacoes, "id", "asc");
@@ -99,9 +99,9 @@ public class AvaliacaoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AvaliacaoDTO> atualizarParcialmenteAvaliacao(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<Avaliacao> atualizarParcialmenteAvaliacao(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
         try {
-            AvaliacaoDTO atualizada = avaliacaoService.atualizarParcialmente(avaliacoes, id, fields);
+            Avaliacao atualizada = avaliacaoService.atualizarParcialmente(avaliacoes, id, fields);
             return ResponseEntity.ok(atualizada);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
