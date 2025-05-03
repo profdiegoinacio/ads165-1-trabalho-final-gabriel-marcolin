@@ -60,7 +60,7 @@ export default function DetalhesServico() {
                 <p><span className="font-semibold">Categoria:</span> {servico.categoria}</p>
                 <p><span className="font-semibold">Preço:</span> {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(servico.preco)}</p>
                 <p><span className="font-semibold">Telefone:</span> {servico.telefone.toString()}</p>
-                <p><span className="font-semibold">Criado por:</span> {servico.usuario}</p>
+                <p><span className="font-semibold">Criado por:</span> {servico.idUsuario /*Botar o nome quando tivermos a integração com banco*/}</p>
 
                 <button
                     onClick={handleContratar}
