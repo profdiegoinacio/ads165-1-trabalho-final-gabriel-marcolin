@@ -29,6 +29,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+
+        <footer className="mt-10 w-full border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+            <p>Todos os direitos reservados</p>
+            <p>Gabriel Marcolin</p>
+            <p>2025</p>
+        </footer>
       </body>
     </html>
   );
