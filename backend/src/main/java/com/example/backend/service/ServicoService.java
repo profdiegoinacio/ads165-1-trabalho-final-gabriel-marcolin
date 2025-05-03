@@ -62,6 +62,7 @@ public class ServicoService {
         servicoAtualizado.setCategoria(servico.getCategoria());
         servicoAtualizado.setPreco(servico.getPreco());
         servicoAtualizado.setTelefone(servico.getTelefone());
+        servicoAtualizado.setIdUsuario(servico.getIdUsuario());
         return servicoAtualizado;
     }
 

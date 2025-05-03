@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import ServicoForm from "@/app/components/ServicoForm";
 import AvaliacaoForm from "@/app/components/AvaliacaoForm";
 import { useRouter } from "next/navigation"
+import {criarServico, EditarServico, fetchTodosServicos, removerServico} from "@/api/fetchServicos";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function Page() {
+    const [servicos, setServicos] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [servicoParaAvaliar, setServicoParaAvaliar] = useState<number | null>(null);
+    const [servicoParaEditar, setServicoParaEditar] = useState<any | null>(null);
 
     // Dados mockados TROCAR DEPOIS PELO FETCH
-    const [servicos, setServicos] = useState([
+    /*const [servicos, setServicos] = useState([
         { id: 1, nome: "Serviço 1", descricao: "Descrição do Serviço 1", usuario: { nome: "João", tipo: "C" }, avaliacaoMedia: 4.5 },
         { id: 2, nome: "Serviço 2", descricao: "Descrição do Serviço 2", usuario: { nome: "Maria", tipo: "P" }, avaliacaoMedia: 3.8 },
         { id: 3, nome: "Serviço 3", descricao: "Descrição do Serviço 3", usuario: { nome: "Carlos", tipo: "C" }, avaliacaoMedia: 4.0 }
-    ]);
-
+    ]);*/
     const [usuarios, setUsuarios] = useState([
         {
             id: 1,
@@ -29,14 +35,58 @@ export default function Page() {
         }
     ]);
 
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
-    const [servicoParaAvaliar, setServicoParaAvaliar] = useState<number | null>(null);
-
+    const router = useRouter();
     const usuarioLogado = usuarios[1];
 
-    const handleCriarServico = (novoServico: { nome: string; descricao: string }) => {
-        setServicos([...servicos, { ...novoServico, id: servicos.length + 1, usuario: { nome: "Usuário Criado", tipo: "C" }, avaliacaoMedia: 0 }]);
-        setMostrarFormulario(false);
+    useEffect(() => {
+        async function carregarServicos() {
+            try {
+                const data = await fetchTodosServicos();
+                setServicos(data);
+            } catch (error) {
+                console.error("Erro ao buscar serviços:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        carregarServicos();
+    }, []);
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+
+
+    const handleCriarServico = async (novoServico: { titulo: string; descricao: string; categoria: string; preco: number; telefone: string }) => {
+        try {
+            const servicoComUsuario = {
+                ...novoServico,
+                idUsuario: usuarioLogado.id,
+            };
+
+            const servicoCriado = await criarServico(servicoComUsuario);
+
+            setServicos([...servicos, servicoCriado]);
+            setMostrarFormulario(false);
+        } catch (error) {
+            console.error("Erro ao criar serviço:", error);
+            alert("Erro ao criar serviço. Tente novamente.");
+        }
+    };
+
+    const handleEditarServico = async (servicoAtualizado: any) => {
+        try {
+            const servicoEditado = await EditarServico(servicoAtualizado);
+
+            servicoEditado.idUsuario = servicoAtualizado.idUsuario;
+
+            setServicos(servicos.map(s => s.id === servicoEditado.id ? servicoEditado : s));
+            alert("Serviço atualizado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao editar serviço:", error);
+            alert("Erro ao editar serviço. Tente novamente.");
+        }
     };
 
     const handleCancelarCriacao = () => {
@@ -45,6 +95,22 @@ export default function Page() {
 
     const podeAvaliar = (servicoId: number) => {
         return usuarioLogado.servicosContratados.includes(servicoId);
+    };
+
+    const servicoProprio = (servico: any) => {
+        return usuarioLogado.id == servico.idUsuario;
+    }
+
+    const handleRemoverServico = async (id: number) => {
+        try {
+            await removerServico(id);
+            const atualizados = servicos.filter(s => s.id !== id);
+            setServicos(atualizados);
+            alert("Serviço removido com sucesso!");
+        } catch (erro) {
+            console.error("Erro ao remover serviço:", erro);
+            alert("Erro ao remover serviço.");
+        }
     };
 
     const handleEnviarAvaliacao = (dados: { nota: number; comentario: string }) => {
@@ -67,8 +133,6 @@ export default function Page() {
         setServicoParaAvaliar(null);
     };
 
-    const router = useRouter();
-
     return (
         <div className="p-6">
             <h1 className="text-3xl font-bold mb-8 text-center">Serviços Disponíveis</h1>
@@ -76,13 +140,13 @@ export default function Page() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {servicos.map((servico) => (
                     <div key={servico.id} className="border rounded-2xl p-6 shadow hover:shadow-lg transition-all bg-white">
-                        <h2 className="text-xl font-semibold mb-2">{servico.nome}</h2>
+                        <h2 className="text-xl font-semibold mb-2">{servico.titulo}</h2>
                         <p className="text-gray-600 mb-2">{servico.descricao}</p>
                         <p className="text-gray-700">
-                            <span className="font-semibold">Criado por:</span> {servico.usuario.nome}
+                            <span className="font-semibold">Criado por:</span> {servico.idUsuario /*Botar o nome quando tivermos a integração com banco*/}
                         </p>
                         <p className="text-gray-700 mt-1">
-                            <span className="font-semibold">Avaliação média:</span> {servico.avaliacaoMedia.toFixed(1)}
+                            <span className="font-semibold">Avaliação média:</span> {}
                         </p>
 
                         <button
@@ -91,6 +155,23 @@ export default function Page() {
                         >
                             Ver detalhes
                         </button>
+
+                        {servicoProprio(servico) && (
+                            <>
+                                <button
+                                    onClick={() => setServicoParaEditar(servico)}
+                                    className="mt-2 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition"
+                                >
+                                    Editar
+                                </button>
+                                <button
+                                    onClick={() => handleRemoverServico(servico.id)}
+                                    className="mt-2 w-full bg-red-600 text-white font-semibold py-2 rounded-lg hover:bg-red-700 transition"
+                                >
+                                    Remover
+                                </button>
+                            </>
+                        )}
 
                         {podeAvaliar(servico.id) && (
                             <>
@@ -125,6 +206,23 @@ export default function Page() {
             {mostrarFormulario && (
                 <div className="mt-8">
                     <ServicoForm onCriar={handleCriarServico} onCancel={handleCancelarCriacao} />
+                </div>
+            )}
+
+            {servicoParaEditar && (
+                <div className="mt-8">
+                    <ServicoForm
+                        servicoInicial={servicoParaEditar}
+                        onEditar={(servicoAtualizado) => {
+                            handleEditarServico({
+                                ...servicoAtualizado,
+                                idUsuario: usuarioLogado.id,
+                            });
+                            setServicoParaEditar(null);
+                        }}
+
+                        onCancel={() => setServicoParaEditar(null)}
+                    />
                 </div>
             )}
         </div>
