@@ -3,6 +3,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ConfirmarSenha from "@/app/components/ConfirmarSenha";
+import {fetchServicoById} from "@/api/fetchServicos";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function DetalhesServico() {
     const { id } = useParams();
@@ -18,39 +20,17 @@ export default function DetalhesServico() {
         servicosContratados: [1, 3]
     };
 
-    /*
-    const servicosMock = [
-        { id: 1, nome: "Serviço 1", descricao: "Descrição completa do Serviço 1", usuario: { nome: "João" }, avaliacaoMedia: 4.5 },
-        { id: 2, nome: "Serviço 2", descricao: "Descrição completa do Serviço 2", usuario: { nome: "Maria" }, avaliacaoMedia: 3.8 },
-        { id: 3, nome: "Serviço 3", descricao: "Descrição completa do Serviço 3", usuario: { nome: "Carlos" }, avaliacaoMedia: 4.0 }
-    ];
-
-*/
     useEffect(() => {
-        /*const encontrado = servicosMock.find(s => s.id === Number(id));
-        setServico(encontrado);*/
-        async function fetchServicos() {
-            try {
-                const resposta = await fetch(`http://localhost:8080/servicos/${id}`)
-                if(!resposta.ok) {
-                    throw new Error("Erro ao buscar serviços");
-                }
-
-                const data = await resposta.json();
-                setServico(data);
-            } catch{
-                console.error("Erro ao buscar serviço:", );
-                setServico(null);
-            }
+        async function carregar() {
+            const data = await fetchServicoById(id);
+            setServico(data);
         }
 
-        if(id){
-            fetchServicos();
-        }
+        carregar();
     }, [id]);
 
     if (!servico) {
-        return <div className="p-6 text-center text-gray-600">Carregando serviço...</div>;
+        return <LoadingSpinner />;
     }
 
     const handleContratar = () => {
