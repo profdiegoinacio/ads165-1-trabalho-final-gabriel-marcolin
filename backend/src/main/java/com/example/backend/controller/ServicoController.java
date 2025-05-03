@@ -57,7 +57,7 @@ public class ServicoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Servico>> buscarProdutos(
+    public ResponseEntity<List<Servico>> buscarServicos(
             @RequestParam(name="titulo", required = false) String titulo,
             @RequestParam(name = "precoMinimo", required = false) Double precoMinimo,
             @RequestParam(name = "categoria", required = false) List<String> categorias,
