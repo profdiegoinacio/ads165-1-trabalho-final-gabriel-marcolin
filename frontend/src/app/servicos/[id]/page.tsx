@@ -1,14 +1,14 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ConfirmarSenha from "@/app/components/ConfirmarSenha";
 import {fetchServicoById} from "@/api/fetchServicos";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import Link from "next/link";
 
 export default function DetalhesServico() {
     const { id } = useParams();
-    const router = useRouter();
     const [servico, setServico] = useState<any>(null);
     const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
 
@@ -69,12 +69,9 @@ export default function DetalhesServico() {
                     Contratar Serviço
                 </button>
 
-                <button
-                    onClick={() => router.push("/servicos")}
-                    className="w-full bg-gray-400 text-white font-semibold py-3 rounded-lg hover:bg-gray-500 transition mt-2"
-                >
+                <Link href="/servicos" className="w-full block bg-gray-400 text-white font-semibold py-3 rounded-lg hover:bg-gray-500 transition mt-2 text-center">
                     Voltar para listagem
-                </button>
+                </Link>
             </div>
 
             {mostrarConfirmacao && (

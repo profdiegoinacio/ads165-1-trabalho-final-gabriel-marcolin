@@ -3,9 +3,9 @@
 import {useEffect, useState} from "react";
 import ServicoForm from "@/app/components/ServicoForm";
 import AvaliacaoForm from "@/app/components/AvaliacaoForm";
-import { useRouter } from "next/navigation"
 import {criarServico, EditarServico, fetchTodosServicos, removerServico} from "@/api/fetchServicos";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import Link from "next/link";
 
 export default function Page() {
     const [servicos, setServicos] = useState<any[]>([]);
@@ -14,12 +14,6 @@ export default function Page() {
     const [servicoParaAvaliar, setServicoParaAvaliar] = useState<number | null>(null);
     const [servicoParaEditar, setServicoParaEditar] = useState<any | null>(null);
 
-    // Dados mockados TROCAR DEPOIS PELO FETCH
-    /*const [servicos, setServicos] = useState([
-        { id: 1, nome: "Serviço 1", descricao: "Descrição do Serviço 1", usuario: { nome: "João", tipo: "C" }, avaliacaoMedia: 4.5 },
-        { id: 2, nome: "Serviço 2", descricao: "Descrição do Serviço 2", usuario: { nome: "Maria", tipo: "P" }, avaliacaoMedia: 3.8 },
-        { id: 3, nome: "Serviço 3", descricao: "Descrição do Serviço 3", usuario: { nome: "Carlos", tipo: "C" }, avaliacaoMedia: 4.0 }
-    ]);*/
     const [usuarios, setUsuarios] = useState([
         {
             id: 1,
@@ -35,7 +29,6 @@ export default function Page() {
         }
     ]);
 
-    const router = useRouter();
     const usuarioLogado = usuarios[1];
 
     useEffect(() => {
@@ -149,12 +142,12 @@ export default function Page() {
                             <span className="font-semibold">Avaliação média:</span> {}
                         </p>
 
-                        <button
-                            onClick={() => router.push(`/servicos/${servico.id}`)}
-                            className="mt-2 w-full bg-gray-500 text-white font-semibold py-2 rounded-lg hover:bg-gray-600 transition"
+                        <Link
+                            href={`/servicos/${servico.id}`}
+                            className="mt-2 w-full inline-block text-center bg-gray-500 text-white font-semibold py-2 rounded-lg hover:bg-gray-600 transition"
                         >
                             Ver detalhes
-                        </button>
+                        </Link>
 
                         {servicoProprio(servico) && (
                             <>
