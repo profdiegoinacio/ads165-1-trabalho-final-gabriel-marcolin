@@ -1,95 +1,140 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/NOiI5yDS)
-# Template de Projeto Fullstack com Spring Boot e Next.js
+# Plataforma de Serviços Comunitários
 
-Este projeto representa um template para o desenvolvimento de aplicações web fullstack modernas utilizando **Spring Boot** no backend e **Next.js** no frontend. Ele foi criado como base para aplicações que utilizam boas práticas de engenharia de software, escalabilidade e integração entre Java e TypeScript.
+Este projeto é uma aplicação web para gestão e contratação de serviços comunitários. Ele é dividido em dois módulos principais:
 
-## **Visão Geral**
+- **Backend** (Java + Spring Boot)
+- **Frontend** (Next.js 15 + TypeScript)
 
-A aplicação é dividida em dois componentes principais:
+## Requisitos
 
-1. **Backend (API RESTful)**:
-    - Construído com **Spring Boot**, um framework amplamente utilizado na comunidade Java para o desenvolvimento de aplicações robustas e performáticas.
-    - Implementa uma arquitetura RESTful para expor endpoints que servirão como interface de comunicação com o frontend.
-    - Inclui configurações para persistência de dados, segurança, e boas práticas de design de API.
+### Backend
+- Java 17 ou superior
+- Maven 3.8 ou superior
 
-2. **Frontend (Interface de Usuário)**:
-    - Desenvolvido em **Next.js**, um framework React para renderização híbrida (client-side e server-side) de aplicações web.
-    - Integra totalmente com o backend, consumindo as APIs REST disponibilizadas pelo Spring Boot.
-    - Utiliza **Tailwind CSS** como ferramenta para estilização baseada em classes utilitárias.
+### Frontend
+- Node.js 18 ou superior
+- npm 9+
 
-O objetivo deste template é acelerar o desenvolvimento de aplicações fullstack modernas que priorizam desempenho, escalabilidade e experiência do usuário.
+## Como configurar e executar
 
-## **Estrutura do Projeto**
-Abaixo, você encontrará a organização geral dos arquivos do projeto:
-``` 
-root/
-├── backend/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/          # Código fonte Java
-│   │   │   ├── resources/     # Arquivos de configuração (application.properties, etc.)
-│   │   ├── test/              # Testes automatizados para o backend
-│   └── pom.xml                # Configuração do Maven para dependências do backend
-├── frontend/
-│   ├── components/            # Componentes React reutilizáveis
-│   ├── pages/                 # Arquivos para rotas do Next.js
-│   ├── public/                # Arquivos estáticos (imagens, fontes, etc.)
-│   ├── styles/                # Estilos globais ou específicos
-│   ├── tailwind.config.js     # Configuração do Tailwind CSS
-│   └── package.json           # Configuração de dependências e scripts do frontend
-├── .gitignore                 # Arquivos e pastas ignorados pelo Git
-└── README.md                  # Documentação do projeto
-```
-## **Pré-requisitos**
-Antes de começar, é fundamental garantir que todas as ferramentas requeridas estejam instaladas. Abaixo, a lista de tecnologias necessárias:
-### Ferramentas Necessárias
-- **Java 21 ou superior** (JDK)
-- **Gradle** (Gerenciador de dependências para o backend)
-- **Node.js** (versão 22 ou superior)
-- **npm** (gerenciador de pacotes Node.js)
-- **IDE**: IntelliJ IDEA ou VS Code
+### Backend
 
-## **Configuração do Ambiente de Desenvolvimento**
+1. Clone o repositório e vá para o diretório do backend:
+   ```bash
+   git clone https://github.com/seu-usuario/seu-repositorio.git
+   cd backend
+   ```
 
-### Passo 1: Clonando o Repositório
+2. Compile e execute a aplicação:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
 
-``` bash
-git clone <url_do_repositorio>
-cd <nome_do_projeto>
-```
+3. A API estará disponível em:
+   ```
+   http://localhost:8080
+   ```
 
-### Passo 2: Configurando o Backend (Spring Boot)
-1. **Abra a pasta `backend` no IntelliJ IDEA ou na sua IDE favorita.**
-2. Certifique-se de que o arquivo `application.properties` contenha informações atualizadas sobre banco de dados, portas, etc. Será necessário configurar:
-    - **Hibernate** para a persistência de dados.
-    - **JPA** para operações no banco de dados.
-    - Uma biblioteca de segurança como **Spring Security**, se aplicável.
+### Frontend
 
-3. Execute o seguinte comando para assegurar que todas as dependências sejam baixadas:
-``` bash
-   ./gradlew build
-```
-1. Inicie o servidor backend com:
-``` bash
-   ./gradlew bootRun
-```
-Por padrão, a API será exposta na porta `http://localhost:8080`.
+1. Acesse o diretório do frontend:
+   ```bash
+   cd frontend
+   ```
 
-### Passo 3: Configurando o Frontend (Next.js)
-1. 
-2. **Abra a pasta `frontend` no seu editor de texto favorito, como VS Code.**
-2. Instale as dependências necessárias:
-``` bash
+2. Instale as dependências:
+   ```bash
    npm install
-```
-1. Execute o servidor frontend:
-``` bash
+   ```
+
+3. Execute o projeto:
+   ```bash
    npm run dev
+   ```
+
+4. A interface estará disponível em:
+   ```
+   http://localhost:3000
+   ```
+
+## Decisões arquiteturais
+
+### Backend
+- Framework: Spring Boot
+- Estrutura organizada em pacotes:
+   - `controller` – exposição dos endpoints REST
+   - `service` – lógica de negócio
+   - `model` – entidades do sistema
+   - `dto` – transferência de dados
+   - `repository(WIP)` – será feito caso tenhamos integração com JPA
+
+### Frontend
+- Framework: Next.js 15 (App Router)
+- Linguagem: TypeScript
+- Estilização: Tailwind CSS
+- Pastas principais:
+   - `components/` – componentes reutilizáveis
+   - `api/` – integração com backend
+   - `app/` – estrutura de rotas e páginas
+
+## Endpoints da API
+
+### Serviços
+
+| Método | Rota                | Descrição                          |
+|--------|---------------------|------------------------------------|
+| GET    | `/servicos`         | Lista todos os serviços            |
+| GET    | `/servicos/{id}`    | Retorna um serviço por ID          |
+| POST   | `/servicos`         | Cadastra um novo serviço           |
+| PUT    | `/servicos`         | Atualiza um serviço existente      |
+| PATCH  | `/servicos/{id}`    | Atualiza parcialmente por ID       |
+| DELETE | `/servicos/{id}`    | Remove um serviço por ID           |
+
+### Usuários
+
+| Método | Rota               | Descrição                          |
+|--------|--------------------|------------------------------------|
+| GET    | `/usuarios`        | Lista todos os usuários            |
+| GET    | `/usuarios/{id}`   | Retorna um usuário por ID          |
+| POST   | `/usuarios`        | Cadastra um novo usuário           |
+| PUT    | `/usuarios`        | Atualiza um usuário existente      |
+| PATCH  | `/usuarios/{id}`   | Atualiza parcialmente por ID       |
+| DELETE | `/usuarios/{id}`   | Remove um usuário por ID           |
+
+### Avaliações
+
+| Método | Rota                 | Descrição                            |
+|--------|----------------------|--------------------------------------|
+| GET    | `/avaliacoes`        | Lista todas as avaliações            |
+| GET    | `/avaliacoes/{id}`   | Retorna uma avaliação por ID         |
+| POST   | `/avaliacoes`        | Cadastra uma nova avaliação          |
+| PUT    | `/avaliacoes`        | Atualiza uma avaliação existente     |
+| PATCH  | `/avaliacoes/{id}`   | Atualiza parcialmente por ID         |
+| DELETE | `/avaliacoes/{id}`   | Remove uma avaliação por ID          |
+
+### Exemplo de requisição: `POST /servicos`
+
+```json
+{
+  "titulo": "Aula de Matemática",
+  "descricao": "Aulas para ensino médio e fundamental",
+  "categoria": "Educação",
+  "preco": 50.0,
+  "telefone": "11999999999",
+  "idUsuario": 1
+}
 ```
-O frontend estará disponível em `http://localhost:3000` por padrão.
 
-## **Referências**
-- [Documentação Oficial do Spring Boot](https://spring.io/projects/spring-boot)
-- [Documentação do Next.js](https://nextjs.org/docs)
+## Funcionalidades principais
 
-Com isso, o modelo está pronto para sua evolução. 🚀 Se houver dúvidas, consulte a documentação ou entre em contato com seu instrutor, ou a equipe!
+- Listagem, filtro e ordenação de serviços
+- Cadastro, edição e exclusão de serviços
+- Detalhamento e contratação com confirmação de senha
+- Histórico de serviços contratados (em progresso)
+- Avaliações de serviços prestados
+- Integração futura com banco de dados e autenticação
+
+## Autor
+
+Gabriel Marcolin  
+Todos os direitos reservados – 2025
