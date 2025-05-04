@@ -139,7 +139,7 @@ export default function Page() {
                             <span className="font-semibold">Criado por:</span> {servico.idUsuario /*Botar o nome quando tivermos a integração com banco*/}
                         </p>
                         <p className="text-gray-700 mt-1">
-                            <span className="font-semibold">Avaliação média:</span> {}
+                            <span className="font-semibold">Avaliação média:</span> {/*Buscar a avaliação quando tivermos integração com banco*/}
                         </p>
 
                         <Link
