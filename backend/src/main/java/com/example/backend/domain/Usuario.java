@@ -1,29 +1,41 @@
 package com.example.backend.domain;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private char tipoUsuario;
 
     @NotBlank(message="O nome do usuário não pode ser nulo")
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
+    @Column(nullable = false, length = 100)
     private String nome;
 
     @NotBlank(message="O email do usuário não pode ser nulo")
     @Size(min = 3, max = 50, message = "O email deve ter entre 3 e 50 caracteres.")
+    @Column(nullable = false, length = 50)
     private String email;
 
     @NotBlank(message="A senha do usuário não pode ser nula")
     @Size(min = 3, max = 50, message = "A senha deve ter entre 3 e 50 caracteres.")
+    @Column(nullable = false, length = 50)
     private String senha;
 
     @Size(max = 11, message = "O telefone inserido é muito grande")
+    @Column
     private String telefone;
 
+    @Column(nullable = false)
+    @ElementCollection
     private List<Long> servicosContratados;
 
     public Usuario(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {

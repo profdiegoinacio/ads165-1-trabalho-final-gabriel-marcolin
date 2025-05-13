@@ -1,22 +1,38 @@
 package com.example.backend.domain;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
+@Entity
+@Table(name="avaliacoes")
 public class Avaliacao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /*@ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)*/
+    @Transient
     private Long servicoId;
+
+    /*@ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)*/
+    @Transient
     private Long usuarioId;
 
     @NotNull(message = "O preço não pode ser nulo.")
     @Min(value = 1, message = "A nota deve ser maior ou igual a 1.")
     @Max(value=5, message = "A nota deve ser menor ou igual a 5")
+    @Column(nullable = false, length = 5)
     private int nota;
 
+    @Column
     private String comentario;
+    @Column
     private Date data;
 
     public Avaliacao(Long id, Long servicoId, Long usuarioId, int nota) {
