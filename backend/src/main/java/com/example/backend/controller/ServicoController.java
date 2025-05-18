@@ -2,14 +2,11 @@ package com.example.backend.controller;
 
 import com.example.backend.domain.Servico;
 import com.example.backend.service.ServicoService;
-import com.example.backend.utils.GeradorDeId;
-import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -17,96 +14,64 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/servicos")
 public class ServicoController {
-    private List<Servico> servicos = new ArrayList<>();
+
     @Autowired
     private ServicoService servicoService;
 
-    //DTO são temporário, comparar com as coisas
-    //Criar as entidades pras listas, por exemplo
-    @PostConstruct
-    public void initServicos(){
-        servicos.add(new Servico(
-                GeradorDeId.gerarId("Servicos"),
-                "Limpeza de Jardim",
-                "Limpo o jardim da sua casa por um preço acessível, trabalho de segunda à sábado e atendo a região de passo fundo",
-                "Limpeza",
-                100.0,
-                "54999787472",
-                1L
-        ));
-
-        servicos.add(new Servico(
-                GeradorDeId.gerarId("Servicos"),
-                "Aulas de Matemática",
-                "Ofereço reforço escolar em matemática para ensino fundamental e médio. Aulas presenciais ou online com material incluso.",
-                "Educação",
-                80.0,
-                "54999881234",
-                2L
-        ));
-
-        servicos.add(new Servico(
-                GeradorDeId.gerarId("Servicos"),
-                "Conserto de Computadores",
-                "Serviço de manutenção e formatação de computadores e notebooks. Atendimento rápido e com garantia.",
-                "Tecnologia",
-                120.0,
-                "54999674321",
-                3L
-        ));
-    }
-
     @GetMapping
     public ResponseEntity<List<Servico>> buscarServicos(
-            @RequestParam(name="titulo", required = false) String titulo,
+            @RequestParam(name = "titulo", required = false) String titulo,
             @RequestParam(name = "precoMinimo", required = false) Double precoMinimo,
             @RequestParam(name = "categoria", required = false) List<String> categorias,
             @RequestParam(name = "ordenarPor", defaultValue = "nome") String ordenarPor,
             @RequestParam(name = "ordem", defaultValue = "asc") String ordem) {
 
-        List<Servico>servicosFiltrados = servicoService.filtrarServicos(servicos,titulo,precoMinimo,categorias);
-        servicosFiltrados = servicoService.ordenarServicos(servicosFiltrados,ordenarPor,ordem);
+        List<Servico> servicosFiltrados = servicoService.filtrarServicos(titulo, precoMinimo, categorias);
+        servicosFiltrados = servicoService.ordenarServicos(servicosFiltrados, ordenarPor, ordem);
 
         return ResponseEntity.ok(servicosFiltrados);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Servico> buscarServicoPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(servicoService.getServicoById(servicos,id));
+        try {
+            Servico servico = servicoService.getServicoById(id);
+            return ResponseEntity.ok(servico);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
     public ResponseEntity<Servico> criarServico(@Valid @RequestBody Servico servico) {
         Servico novoServico = servicoService.criarServico(servico);
-        servicos.add(novoServico);
         return ResponseEntity.ok(novoServico);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirServico(@PathVariable Long id) {
-        if (servicos.stream().noneMatch(s -> s.getId().equals(id))) {
+        try {
+            servicoService.deletarServico(id);
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
-        servicos.remove(servicoService.getServicoById(servicos,id));
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping
     public ResponseEntity<Servico> atualizarServico(@Valid @RequestBody Servico servico) {
-        if (servicos.stream().noneMatch(s -> s.getId().equals(servico.getId()))) {
+        try {
+            Servico servicoAtualizado = servicoService.atualizarServico(servico);
+            return ResponseEntity.ok(servicoAtualizado);
+        } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
-        Servico servicoAtualizado = servicoService.atualizarServico(servico);
-        servicos.removeIf(s -> s.getId().equals(servico.getId()));
-        servicos.add(servicoAtualizado);
-        servicos = servicoService.ordenarServicos(servicos,"id","asc");
-        return ResponseEntity.ok(servicoAtualizado);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Servico> atualizarParcialmenteServico(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
         try {
-            Servico atualizado = servicoService.atualizarParcialmente(servicos, id, fields);
+            Servico atualizado = servicoService.atualizarParcialmente(id, fields);
             return ResponseEntity.ok(atualizado);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -115,4 +80,3 @@ public class ServicoController {
         }
     }
 }
-

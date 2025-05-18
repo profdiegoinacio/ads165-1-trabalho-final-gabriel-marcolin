@@ -15,7 +15,7 @@ public class Avaliacao {
     private Long id;
 
     /*@ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false)*/
+    @Column(name = "usuario_id", nullable = false)*/
     @Transient
     private Long servicoId;
 

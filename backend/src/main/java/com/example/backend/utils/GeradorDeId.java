@@ -2,7 +2,7 @@ package com.example.backend.utils;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/*
 public class  GeradorDeId{
     private static Map<String, Long> ids = new HashMap<>();
 
@@ -12,3 +12,4 @@ public class  GeradorDeId{
         return idAtual;
     }
 }
+*/

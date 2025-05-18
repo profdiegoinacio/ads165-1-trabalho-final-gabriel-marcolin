@@ -1,24 +1,26 @@
 package com.example.backend.service;
 
 import com.example.backend.domain.Avaliacao;
-import com.example.backend.utils.GeradorDeId;
+import com.example.backend.repository.AvaliacaoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class AvaliacaoService {
 
-    public List<Avaliacao> filtrarAvaliacoes(List<Avaliacao> avaliacoes, Long servicoId, Long usuarioId, Integer notaMinima) {
-        return avaliacoes.stream()
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
+
+    public List<Avaliacao> filtrarAvaliacoes(Long servicoId, Long usuarioId, Integer notaMinima) {
+        List<Avaliacao> todas = avaliacaoRepository.findAll();
+
+        return todas.stream()
                 .filter(a -> servicoId == null || a.getServicoId().equals(servicoId))
                 .filter(a -> usuarioId == null || a.getUsuarioId().equals(usuarioId))
                 .filter(a -> notaMinima == null || a.getNota() >= notaMinima)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Avaliacao> ordenarAvaliacoes(List<Avaliacao> avaliacoes, String ordenarPor, String ordem) {
@@ -35,43 +37,30 @@ public class AvaliacaoService {
                     };
                     return "desc".equalsIgnoreCase(ordem) ? -comparison : comparison;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public Avaliacao getAvaliacaoById(List<Avaliacao> avaliacoes, Long id) {
-        return avaliacoes.stream()
-                .filter(avaliacao -> avaliacao.getId().equals(id))
-                .findFirst()
+    public Avaliacao getAvaliacaoById(Long id) {
+        return avaliacaoRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Avaliação não encontrada com o ID: " + id));
     }
 
     public Avaliacao criarAvaliacao(Avaliacao avaliacao) {
-        return new Avaliacao(
-                GeradorDeId.gerarId("Avaliacoes"),
-                avaliacao.getServicoId(),
-                avaliacao.getUsuarioId(),
-                avaliacao.getNota(),
-                avaliacao.getComentario(),
-                new Date()
-        );
+        if (avaliacao.getData() == null) {
+            avaliacao.setData(new Date());
+        }
+        return avaliacaoRepository.save(avaliacao);
     }
 
     public Avaliacao atualizarAvaliacao(Avaliacao avaliacao) {
-        Avaliacao atualizada = new Avaliacao();
-        atualizada.setId(avaliacao.getId());
-        atualizada.setServicoId(avaliacao.getServicoId());
-        atualizada.setUsuarioId(avaliacao.getUsuarioId());
-        atualizada.setNota(avaliacao.getNota());
-        atualizada.setComentario(avaliacao.getComentario());
-        atualizada.setData(avaliacao.getData());
-        return atualizada;
+        if (!avaliacaoRepository.existsById(avaliacao.getId())) {
+            throw new NoSuchElementException("Avaliação não encontrada para atualizar");
+        }
+        return avaliacaoRepository.save(avaliacao);
     }
 
-    public Avaliacao atualizarParcialmente(List<Avaliacao> avaliacoes, Long id, Map<String, Object> fields) {
-        Avaliacao avaliacao = avaliacoes.stream()
-                .filter(a -> a.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Avaliação não encontrada com o ID: " + id));
+    public Avaliacao atualizarParcialmente(Long id, Map<String, Object> fields) {
+        Avaliacao avaliacao = getAvaliacaoById(id);
 
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             String key = entry.getKey();
@@ -99,6 +88,13 @@ public class AvaliacaoService {
             }
         }
 
-        return avaliacao;
+        return avaliacaoRepository.save(avaliacao);
+    }
+
+    public void deletarAvaliacao(Long id) {
+        if (!avaliacaoRepository.existsById(id)) {
+            throw new NoSuchElementException("Avaliação não encontrada para exclusão.");
+        }
+        avaliacaoRepository.deleteById(id);
     }
 }

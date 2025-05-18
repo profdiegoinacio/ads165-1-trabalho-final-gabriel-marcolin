@@ -1,19 +1,21 @@
 package com.example.backend.service;
 
 import com.example.backend.domain.Usuario;
-import com.example.backend.utils.GeradorDeId;
+import com.example.backend.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
 
-    public List<Usuario> filtrarUsuarios(List<Usuario> usuarios, String nome, String email, Character tipo) {
-        return usuarios.stream()
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    public List<Usuario> filtrarUsuarios(String nome, String email, Character tipo) {
+        return usuarioRepository.findAll().stream()
                 .filter(u -> nome == null || u.getNome().toLowerCase().contains(nome.toLowerCase()))
                 .filter(u -> email == null || u.getEmail().toLowerCase().contains(email.toLowerCase()))
                 .filter(u -> tipo == null || u.getTipoUsuario() == tipo)
@@ -35,41 +37,24 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public Usuario getUsuarioById(List<Usuario> usuarios, Long id) {
-        return usuarios.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
+    public Usuario getUsuarioById(Long id) {
+        return usuarioRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + id));
     }
 
     public Usuario criarUsuario(Usuario usuario) {
-        Usuario usuarioCriado = new Usuario(
-                GeradorDeId.gerarId("Usuarios"),
-                usuario.getTipoUsuario(),
-                usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getSenha(),
-                usuario.getTelefone()
-        );
-        return usuarioCriado;
+        return usuarioRepository.save(usuario);
     }
 
     public Usuario atualizarUsuario(Usuario usuario) {
-        Usuario usuarioAtualizado = new Usuario();
-        usuarioAtualizado.setId(usuario.getId());
-        usuarioAtualizado.setTipoUsuario(usuario.getTipoUsuario());
-        usuarioAtualizado.setNome(usuario.getNome());
-        usuarioAtualizado.setEmail(usuario.getEmail());
-        usuarioAtualizado.setSenha(usuario.getSenha());
-        usuarioAtualizado.setTelefone(usuario.getTelefone());
-        return usuarioAtualizado;
+        if (!usuarioRepository.existsById(usuario.getId())) {
+            throw new NoSuchElementException("Usuário não encontrado com o ID: " + usuario.getId());
+        }
+        return usuarioRepository.save(usuario);
     }
 
-    public Usuario atualizarParcialmente(List<Usuario> usuarios, Long id, Map<String, Object> fields) {
-        Usuario usuario = usuarios.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + id));
+    public Usuario atualizarParcialmente(Long id, Map<String, Object> fields) {
+        Usuario usuario = getUsuarioById(id);
 
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             String key = entry.getKey();
@@ -80,53 +65,36 @@ public class UsuarioService {
             }
 
             switch (key) {
-                case "tipoUsuario" -> {
-                    if (!(value instanceof Character)) {
-                        throw new IllegalArgumentException("O campo 'tipoUsuario' deve ser um caractere.");
-                    }
-                    usuario.setTipoUsuario((Character) value);
-                }
-                case "nome" -> {
-                    if (!(value instanceof String)) {
-                        throw new IllegalArgumentException("O campo 'nome' deve ser uma String.");
-                    }
-                    usuario.setNome((String) value);
-                }
-                case "email" -> {
-                    if (!(value instanceof String)) {
-                        throw new IllegalArgumentException("O campo 'email' deve ser uma String.");
-                    }
-                    usuario.setEmail((String) value);
-                }
-                case "senha" -> {
-                    if (!(value instanceof String)) {
-                        throw new IllegalArgumentException("O campo 'senha' deve ser uma String.");
-                    }
-                    usuario.setSenha((String) value);
-                }
-                case "telefone" -> {
-                    if (!(value instanceof String)) {
-                        throw new IllegalArgumentException("O campo 'telefone' deve ser uma String.");
-                    }
-                    usuario.setTelefone((String) value);
-                }
+                case "tipoUsuario" -> usuario.setTipoUsuario((Character) value);
+                case "nome" -> usuario.setNome((String) value);
+                case "email" -> usuario.setEmail((String) value);
+                case "senha" -> usuario.setSenha((String) value);
+                case "telefone" -> usuario.setTelefone((String) value);
                 default -> throw new IllegalArgumentException("Campo inválido: " + key);
             }
         }
 
-        return usuario;
+        return usuarioRepository.save(usuario);
     }
 
-    public Usuario adicionarServicoContratado(List<Usuario> usuarios, Long usuarioId, Long servicoId) {
-        Usuario usuario = usuarios.stream()
-                .filter(u -> u.getId().equals(usuarioId))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+    public Usuario adicionarServicoContratado(Long usuarioId, Long servicoId) {
+        Usuario usuario = getUsuarioById(usuarioId);
 
         if (!usuario.getServicosContratados().contains(servicoId)) {
             usuario.getServicosContratados().add(servicoId);
         }
 
-        return usuario;
+        return usuarioRepository.save(usuario);
+    }
+
+    public void excluirUsuario(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new NoSuchElementException("Usuário não encontrado com o ID: " + id);
+        }
+        usuarioRepository.deleteById(id);
+    }
+
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.findAll();
     }
 }
