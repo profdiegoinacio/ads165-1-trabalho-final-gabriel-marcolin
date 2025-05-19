@@ -1,5 +1,7 @@
 package com.example.backend.dto;
 
+import com.example.backend.domain.Servico;
+import com.example.backend.domain.Usuario;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +10,8 @@ import java.util.Date;
 /// Não entendi muito bem como usar os DTOs. Criei eles mas verificarei com o professor na segunda sobre seu uso
 public class AvaliacaoDTO {
     private Long id;
-    private Long servicoId;
-    private Long usuarioId;
+    private Servico servico;
+    private Usuario usuario;
 
     @NotNull(message = "O preço não pode ser nulo.")
     @Min(value = 1, message = "A nota deve ser maior ou igual a 1.")
@@ -19,17 +21,17 @@ public class AvaliacaoDTO {
     private String comentario;
     private Date data;
 
-    public AvaliacaoDTO(Long id, Long servicoId, Long usuarioId, int nota) {
+    public AvaliacaoDTO(Long id, Servico servicoId, Usuario usuarioId, int nota) {
         this.id = id;
-        this.servicoId = servicoId;
-        this.usuarioId = usuarioId;
+        this.servico = servico;
+        this.usuario = usuario;
         this.nota = nota;
     }
 
-    public AvaliacaoDTO(Long id, Long servicoId, Long usuarioId, int nota, String comentario, Date data) {
+    public AvaliacaoDTO(Long id, Servico servico, Usuario usuario, int nota, String comentario, Date data) {
         this.id = id;
-        this.servicoId = servicoId;
-        this.usuarioId = usuarioId;
+        this.servico = servico;
+        this.usuario = usuario;
         this.nota = nota;
         this.comentario = comentario;
         this.data = data;
@@ -46,21 +48,19 @@ public class AvaliacaoDTO {
         this.id = id;
     }
 
-    public Long getServicoId() {
-        return servicoId;
+    public Servico getServico() {
+        return servico;
     }
 
-    public void setServicoId(Long servicoId) {
-        this.servicoId = servicoId;
+    public void setServico(Servico servico) {
+        this.servico = servico;
     }
 
-    public Long getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
+    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 
     public int getNota() {
         return nota;

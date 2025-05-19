@@ -1,5 +1,6 @@
 package com.example.backend.dto;
 
+import com.example.backend.domain.Usuario;
 import jakarta.validation.constraints.*;
 /// Não entendi muito bem como usar os DTOs. Criei eles mas verificarei com o professor na segunda sobre seu uso
 public class ServicoDTO {
@@ -26,16 +27,16 @@ public class ServicoDTO {
     @Size(max = 11, message = "O telefone inserido é muito grande")
     private String telefone;
 
-    private Long idUsuario;
+    private Usuario Usuario;
 
-    public ServicoDTO(Long id, String titulo, String descricao, String categoria, Double preco, String telefone, Long idUsuario) {
+    public ServicoDTO(Long id, String titulo, String descricao, String categoria, Double preco, String telefone, Usuario Usuario) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
         this.telefone = telefone;
-        this.idUsuario = idUsuario;
+        this.Usuario = Usuario;
     }
 
     public ServicoDTO() {
@@ -89,12 +90,12 @@ public class ServicoDTO {
         this.telefone = telefone;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return Usuario;
     }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
     }
 
 }
