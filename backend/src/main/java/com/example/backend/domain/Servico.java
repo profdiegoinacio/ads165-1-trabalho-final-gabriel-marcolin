@@ -36,19 +36,18 @@ public class Servico {
     @Column(nullable = false, length = 11)
     private String telefone;
 
-    /*@ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false)*/
-    @Transient
-    private Long idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario Usuario;
 
-    public Servico(Long id, String titulo, String descricao, String categoria, Double preco, String telefone, Long idUsuario) {
+    public Servico(Long id, String titulo, String descricao, String categoria, Double preco, String telefone, Usuario Usuario) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
         this.telefone = telefone;
-        this.idUsuario = idUsuario;
+        this.Usuario = Usuario;
     }
 
     public Servico() {
@@ -102,12 +101,12 @@ public class Servico {
         this.telefone = telefone;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return Usuario;
     }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
     }
 
 }

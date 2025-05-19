@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.domain.Servico;
 import com.example.backend.domain.Usuario;
 import com.example.backend.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -68,9 +69,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/{usuarioId}/contratar/{servicoId}")
-    public ResponseEntity<Usuario> contratarServico(@PathVariable Long usuarioId, @PathVariable Long servicoId) {
+    public ResponseEntity<Usuario> contratarServico(@PathVariable Long usuarioId, @RequestBody Servico servico) {
         try {
-            return ResponseEntity.ok(usuarioService.adicionarServicoContratado(usuarioId, servicoId));
+            return ResponseEntity.ok(usuarioService.adicionarServicoContratado(usuarioId, servico));
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }

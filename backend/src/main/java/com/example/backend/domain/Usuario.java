@@ -34,9 +34,8 @@ public class Usuario {
     @Column
     private String telefone;
 
-    @Column(nullable = false)
-    @ElementCollection
-    private List<Long> servicosContratados;
+    @OneToMany(mappedBy = "servicos", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Servico> servicosContratados;
 
     public Usuario(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {
         this.id = id;
@@ -107,11 +106,11 @@ public class Usuario {
         this.telefone = telefone;
     }
 
-    public List<Long> getServicosContratados() {
+    public List<Servico> getServicosContratados() {
         return servicosContratados;
     }
 
-    public void setServicosContratados(List<Long> servicosContratados) {
+    public void setServicosContratados(List<Servico> servicosContratados) {
         this.servicosContratados = servicosContratados;
     }
 }

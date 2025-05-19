@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.domain.Servico;
 import com.example.backend.domain.Usuario;
 import com.example.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,11 +78,11 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario adicionarServicoContratado(Long usuarioId, Long servicoId) {
+    public Usuario adicionarServicoContratado(Long usuarioId, Servico servico) {
         Usuario usuario = getUsuarioById(usuarioId);
 
-        if (!usuario.getServicosContratados().contains(servicoId)) {
-            usuario.getServicosContratados().add(servicoId);
+        if (!usuario.getServicosContratados().contains(servico)) {
+            usuario.getServicosContratados().add(servico);
         }
 
         return usuarioRepository.save(usuario);

@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.domain.Servico;
+import com.example.backend.domain.Usuario;
 import com.example.backend.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ public class ServicoService {
 
     @Autowired
     private ServicoRepository repository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     public List<Servico> filtrarServicos(String titulo, Double precoMinimo, List<String> categorias) {
         return repository.findAll().stream()
@@ -53,7 +56,7 @@ public class ServicoService {
         existente.setCategoria(servico.getCategoria());
         existente.setPreco(servico.getPreco());
         existente.setTelefone(servico.getTelefone());
-        existente.setIdUsuario(servico.getIdUsuario());
+        existente.setUsuario(servico.getUsuario());
         return repository.save(existente);
     }
 
@@ -64,6 +67,7 @@ public class ServicoService {
 
     public Servico atualizarParcialmente(Long id, Map<String, Object> fields) {
         Servico servico = getServicoById(id);
+        Usuario usuario = null;
 
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             String key = entry.getKey();
@@ -79,7 +83,14 @@ public class ServicoService {
                 case "categoria" -> servico.setCategoria((String) value);
                 case "preco" -> servico.setPreco(Double.valueOf(value.toString()));
                 case "telefone" -> servico.setTelefone((String) value);
-                case "idUsuario" -> servico.setIdUsuario(Long.valueOf(value.toString()));
+                case "idUsuario" -> {
+                    Long idUsuario = Long.valueOf(value.toString());
+                    usuario = usuarioService.getUsuarioById(idUsuario);
+                    if (usuario == null) {
+                        throw new IllegalArgumentException("Usuário com ID " + idUsuario + " não encontrado.");
+                    }
+                    servico.setUsuario(usuario);
+                }
                 default -> throw new IllegalArgumentException("Campo inválido: " + key);
             }
         }

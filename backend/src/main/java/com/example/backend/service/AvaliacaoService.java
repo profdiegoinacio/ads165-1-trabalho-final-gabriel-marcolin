@@ -17,8 +17,8 @@ public class AvaliacaoService {
         List<Avaliacao> todas = avaliacaoRepository.findAll();
 
         return todas.stream()
-                .filter(a -> servicoId == null || a.getServicoId().equals(servicoId))
-                .filter(a -> usuarioId == null || a.getUsuarioId().equals(usuarioId))
+                .filter(a -> servicoId == null || a.getServico().getId().equals(servicoId))
+                .filter(a -> usuarioId == null || a.getUsuario().getId().equals(usuarioId))
                 .filter(a -> notaMinima == null || a.getNota() >= notaMinima)
                 .toList();
     }

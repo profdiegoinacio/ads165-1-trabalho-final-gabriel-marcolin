@@ -14,15 +14,13 @@ public class Avaliacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /*@ManyToOne(optional = false)
-    @Column(name = "usuario_id", nullable = false)*/
-    @Transient
-    private Long servicoId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "servico_id", nullable = false)
+    private Servico servico;
 
-    /*@ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false)*/
-    @Transient
-    private Long usuarioId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     @NotNull(message = "O preço não pode ser nulo.")
     @Min(value = 1, message = "A nota deve ser maior ou igual a 1.")
@@ -35,17 +33,17 @@ public class Avaliacao {
     @Column
     private Date data;
 
-    public Avaliacao(Long id, Long servicoId, Long usuarioId, int nota) {
+    public Avaliacao(Long id, Servico servicoId, Usuario usuario, int nota) {
         this.id = id;
-        this.servicoId = servicoId;
-        this.usuarioId = usuarioId;
+        this.servico = servicoId;
+        this.usuario = usuario;
         this.nota = nota;
     }
 
-    public Avaliacao(Long id, Long servicoId, Long usuarioId, int nota, String comentario, Date data) {
+    public Avaliacao(Long id, Servico servico, Usuario usuario, int nota, String comentario, Date data) {
         this.id = id;
-        this.servicoId = servicoId;
-        this.usuarioId = usuarioId;
+        this.servico = servico;
+        this.usuario = usuario;
         this.nota = nota;
         this.comentario = comentario;
         this.data = data;
@@ -62,20 +60,20 @@ public class Avaliacao {
         this.id = id;
     }
 
-    public Long getServicoId() {
-        return servicoId;
+    public Servico getServico() {
+        return servico;
     }
 
-    public void setServicoId(Long servicoId) {
-        this.servicoId = servicoId;
+    public void setServico(Servico servico) {
+        this.servico = servico;
     }
 
-    public Long getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setUsuario(Usuario usuarioId) {
+        this.usuario = usuarioId;
     }
 
     public int getNota() {
