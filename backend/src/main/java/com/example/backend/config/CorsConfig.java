@@ -1,5 +1,5 @@
 package com.example.backend.config;
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -15,4 +15,4 @@ public class CorsConfig implements WebMvcConfigurer{
                 .allowedHeaders("*")  // Permite todos os cabeçalhos
                 .allowCredentials(true);  // Permite credenciais como cookies ou headers de autenticação
     }
-}
+}*/

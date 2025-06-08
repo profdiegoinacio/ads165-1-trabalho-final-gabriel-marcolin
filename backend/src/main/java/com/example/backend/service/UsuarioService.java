@@ -4,22 +4,25 @@ import com.example.backend.domain.Servico;
 import com.example.backend.domain.Usuario;
 import com.example.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> filtrarUsuarios(String nome, String email, Character tipo) {
+    public List<Usuario> filtrarUsuarios(String nome, /*String email,*/ String role) {
         return usuarioRepository.findAll().stream()
-                .filter(u -> nome == null || u.getNome().toLowerCase().contains(nome.toLowerCase()))
-                .filter(u -> email == null || u.getEmail().toLowerCase().contains(email.toLowerCase()))
-                .filter(u -> tipo == null || u.getTipoUsuario() == tipo)
+                .filter(u -> nome == null || u.getUsername().toLowerCase().contains(nome.toLowerCase()))
+                /*.filter(u -> email == null || u.getEmail().toLowerCase().contains(email.toLowerCase()))*/
+                .filter(u -> role == null || u.getRoles().contains(role))
                 .collect(Collectors.toList());
     }
 
@@ -28,9 +31,9 @@ public class UsuarioService {
                 .sorted((u1, u2) -> {
                     int comparison = switch (ordenarPor) {
                         case "id" -> Long.compare(u1.getId(), u2.getId());
-                        case "nome" -> u1.getNome().compareToIgnoreCase(u2.getNome());
-                        case "email" -> u1.getEmail().compareToIgnoreCase(u2.getEmail());
-                        case "tipoUsuario" -> Character.compare(u1.getTipoUsuario(), u2.getTipoUsuario());
+                        case "nome" -> u1.getUsername().compareToIgnoreCase(u2.getUsername());
+                        /*case "email" -> u1.getEmail().compareToIgnoreCase(u2.getEmail());*/
+                        case "roles" -> u1.getRoles().toString().compareToIgnoreCase(u2.getRoles().toString());
                         default -> 0;
                     };
                     return "desc".equalsIgnoreCase(ordem) ? -comparison : comparison;
@@ -66,11 +69,20 @@ public class UsuarioService {
             }
 
             switch (key) {
-                case "tipoUsuario" -> usuario.setTipoUsuario((Character) value);
-                case "nome" -> usuario.setNome((String) value);
-                case "email" -> usuario.setEmail((String) value);
-                case "senha" -> usuario.setSenha((String) value);
-                case "telefone" -> usuario.setTelefone((String) value);
+                case "roles" -> {
+                    if (value instanceof List<?>) {
+                        Set<String> roles = ((List<?>) value).stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toSet());
+                        usuario.setRoles(roles);
+                    } else {
+                        throw new IllegalArgumentException("Formato inválido para 'roles'. Esperado: lista de strings.");
+                    }
+                }
+                case "username" -> usuario.setUsername((String) value);
+                /*case "email" -> usuario.setEmail((String) value);*/
+                case "password" -> usuario.setPassword((String) value);
+                /*case "telefone" -> usuario.setTelefone((String) value);*/
                 default -> throw new IllegalArgumentException("Campo inválido: " + key);
             }
         }
@@ -97,5 +109,11 @@ public class UsuarioService {
 
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 }

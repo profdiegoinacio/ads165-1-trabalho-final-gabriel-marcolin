@@ -23,11 +23,11 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> buscarUsuarios(
             @RequestParam(name = "nome", required = false) String nome,
             @RequestParam(name = "email", required = false) String email,
-            @RequestParam(name = "tipo", required = false) Character tipo,
+            @RequestParam(name = "roles", required = false) String role,
             @RequestParam(name = "ordenarPor", defaultValue = "id") String ordenarPor,
             @RequestParam(name = "ordem", defaultValue = "asc") String ordem) {
 
-        List<Usuario> filtrados = usuarioService.filtrarUsuarios(nome, email, tipo);
+        List<Usuario> filtrados = usuarioService.filtrarUsuarios(nome, /*email,*/ role);
         filtrados = usuarioService.ordenarUsuarios(filtrados, ordenarPor, ordem);
         return ResponseEntity.ok(filtrados);
     }
@@ -37,10 +37,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.getUsuarioById(id));
     }
 
+    /*
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.criarUsuario(usuario));
-    }
+    }*/
 
     @PutMapping
     public ResponseEntity<Usuario> atualizarUsuario(@Valid @RequestBody Usuario usuario) {
