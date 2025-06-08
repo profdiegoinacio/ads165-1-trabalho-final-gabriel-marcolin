@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
+import SessionProviderWrapper from "@/app/components/SessionProviderWrapper";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -41,9 +43,9 @@ export default function RootLayout({
               </button>
           </Link>
       </nav>
-
+      <SessionProviderWrapper>
         {children}
-
+      </SessionProviderWrapper>
         <footer className="mt-10 w-full border-t border-gray-200 py-6 text-center text-sm text-gray-500">
             <p>Todos os direitos reservados</p>
             <p>Gabriel Marcolin</p>
