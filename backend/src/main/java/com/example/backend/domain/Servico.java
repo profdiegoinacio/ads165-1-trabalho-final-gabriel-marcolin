@@ -38,7 +38,7 @@ public class Servico {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario Usuario;
+    private Usuario usuario;
 
     public Servico(Long id, String titulo, String descricao, String categoria, Double preco, String telefone, Usuario Usuario) {
         this.id = id;
@@ -47,7 +47,7 @@ public class Servico {
         this.categoria = categoria;
         this.preco = preco;
         this.telefone = telefone;
-        this.Usuario = Usuario;
+        this.usuario = Usuario;
     }
 
     public Servico() {
@@ -102,11 +102,11 @@ public class Servico {
     }
 
     public Usuario getUsuario() {
-        return Usuario;
+        return usuario;
     }
 
     public void setUsuario(Usuario Usuario) {
-        this.Usuario = Usuario;
+        this.usuario = Usuario;
     }
 
 }

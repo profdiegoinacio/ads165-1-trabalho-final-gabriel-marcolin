@@ -34,7 +34,7 @@ public class Usuario {
     @Column
     private String telefone;
 
-    @OneToMany(mappedBy = "servicos", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Servico> servicosContratados;
 
     public Usuario(Long id, char tipoUsuario, String nome, String email, String senha, String telefone) {
