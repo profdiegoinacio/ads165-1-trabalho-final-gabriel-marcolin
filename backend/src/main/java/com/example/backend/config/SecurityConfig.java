@@ -46,7 +46,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/register", "/error").permitAll() // Endpoints públicos
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir requisições OPTIONS (pre-flight)
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Exemplo de restrição por papel
-                        .anyRequest().authenticated() // Todas as outras requisições exigem autenticação
+                        .anyRequest().permitAll() // Todas as outras requisições exigem autenticação
+                        //PERMITINDO DEVIDO AO FATO QUE NÃO CONSEGUIMOS IMPLEMENTAR A AUTENTICAÇÃO DAS REQUISIÇÕES NO FRONTEND POR FALTA DO TOKEN DO USESESSION
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sessões stateless
