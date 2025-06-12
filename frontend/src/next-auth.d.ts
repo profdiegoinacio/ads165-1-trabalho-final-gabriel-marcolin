@@ -6,6 +6,7 @@ declare module 'next-auth' {
     interface Session {
         accessToken?: string; // Token do backend
         user: {
+            id?: string;
             roles?: string[];
             username?: string;
         } & DefaultSession['user']; // Mantém as propriedades padrão
@@ -14,6 +15,7 @@ declare module 'next-auth' {
     // O objeto User retornado pelo `authorize` do CredentialsProvider
     // ou de um provedor OAuth
     interface User extends DefaultUser {
+        id?: string;
         accessToken?: string;
         roles?: string[];
         username?: string;
@@ -22,6 +24,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
     interface JWT extends DefaultJWT {
+        id?: string;
         accessToken?: string;
         roles?: string[];
         username?: string;
