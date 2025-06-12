@@ -68,7 +68,7 @@ export const config = {
                         // 5. Retornar objeto do usuário que será armazenado na sessão
                         // IMPORTANTE: Este objeto será disponibilizado nos callbacks jwt() e session()
                         return {
-                            id: userData.username,
+                            id: userData.id,
                             username: userData.username,
                             email: userData.email || `${userData.username}@sistema.com`,
                             roles: userData.roles || [], // Array de papéis/permissões

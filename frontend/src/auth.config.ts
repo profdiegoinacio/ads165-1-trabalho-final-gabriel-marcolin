@@ -35,7 +35,7 @@ export const authConfig = {
                     ...token,
                     accessToken: user.accessToken, // O JWT do Spring Boot
                     roles: user.roles,
-                    // id: user.id, // Se você tiver um ID do usuário no backend
+                    id: user.id, // Se você tiver um ID do usuário no backend
                     username: user.username, // Adicionando username
                 };
             }
@@ -54,7 +54,7 @@ export const authConfig = {
             if (jwtToken.username) {
                 session.user.username = jwtToken.username as string;
             }
-            // session.user.id = jwtToken.id as string; // Se tiver ID
+            session.user.id = jwtToken.id as string; // Se tiver ID
             return session;
         },
     },
