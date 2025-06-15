@@ -2,7 +2,6 @@
 
 import {useParams, useRouter} from "next/navigation";
 import { useEffect, useState } from "react";
-import ConfirmarSenha from "@/app/components/ConfirmarSenha";
 import {fetchServicoById} from "@/api/fetchServicos";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import Link from "next/link";
@@ -12,7 +11,6 @@ import {EditarUsuario, fetchUsuarioByUsername} from "@/api/fetchUsuarios";
 export default function DetalhesServico() {
     const { id } = useParams();
     const [servico, setServico] = useState<any>(null);
-    const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
     const [usuario, setUsuario] = useState<any>(null);
     const [nomeUsuario, setNomeUsuario] = useState<string|any>(null);
     const { data: session, status } = useSession();

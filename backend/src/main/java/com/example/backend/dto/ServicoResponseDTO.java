@@ -9,7 +9,7 @@ public class ServicoResponseDTO {
     private String categoria;
     private Double preco;
     private String telefone;
-    private UsuarioDTO usuario; // objeto com id, username, etc
+    private UsuarioDTO usuario;
 
     public ServicoResponseDTO(Servico servico) {
         this.id = servico.getId();
