@@ -6,9 +6,10 @@ import {getMediaAvaliacao} from "@/api/fetchAvaliacoes";
 
 interface Props {
     servicoId: number;
+    atualizar: number;
 }
 
-export default function MediaAvaliacao({ servicoId }: Props) {
+export default function MediaAvaliacao({ servicoId, atualizar }: Props) {
     const [media, setMedia] = useState<number | null>(null);
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export default function MediaAvaliacao({ servicoId }: Props) {
             }
         };
         carregar();
-    }, [servicoId]);
+    }, [servicoId, atualizar]);
 
     return (
         <span>

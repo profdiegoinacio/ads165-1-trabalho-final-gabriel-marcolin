@@ -79,7 +79,6 @@ export default function HistoricoServicos() {
                         <p><span className="font-semibold">Categoria:</span> {servico.categoria}</p>
                         <p><span className="font-semibold">Preço:</span> R$ {servico.preco?.toFixed(2)}</p>
                         <p><span className="font-semibold">Telefone:</span> {servico.telefone}</p>
-                        <p><span className="font-semibold">Prestador:</span> {servico.usuario?.username}</p>
 
                         <button
                             onClick={() => handleCancelarContratacao(servico.id)}

@@ -21,6 +21,7 @@ export default function Page() {
     const [nomeUsuario, setNomeUsuario] = useState<string|any>(null);
     const [usuario, setUsuario] = useState<any>(null);
     const [usuarios, setUsuarios] = useState<any[]>([]); //Para poder evitar erro ao remover
+    const [avaliacoesAtualizadas, setAvaliacoesAtualizadas] = useState(0);
 
     useEffect(() => {
         if (session?.user?.username) {
@@ -175,6 +176,7 @@ export default function Page() {
             const AvaliacaoCriada = await criarAvaliacao(avaliacao);
 
             setServicoParaAvaliar(null);
+            setAvaliacoesAtualizadas(prev => prev + 1);//Para atualizar a média em tela
             alert("Avaliação enviada com sucesso!");
         } catch (error) {
             console.error("Erro ao criar serviço:", error);
@@ -200,7 +202,7 @@ export default function Page() {
                         </p>
                         <p className="text-gray-700 mt-1">
                             <span className="font-semibold">Avaliação média:</span>{" "}
-                            <MediaAvaliacao servicoId={servico.id} />
+                            <MediaAvaliacao servicoId={servico.id} atualizar={avaliacoesAtualizadas} />
                         </p>
 
                         <Link
