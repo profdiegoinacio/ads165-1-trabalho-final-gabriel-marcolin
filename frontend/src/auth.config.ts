@@ -10,8 +10,9 @@ export const authConfig = {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
             const isOnServicos = nextUrl.pathname.startsWith('/servicos'); // Exemplo de rota protegida
+            const isOnHistorico = nextUrl.pathname.startsWith('/historico');
 
-            if (isOnServicos) {
+            if (isOnServicos || isOnHistorico) {
                 if (isLoggedIn) return true;
                 return false; // Redireciona usuários não logados para a página de login
             } else if (isLoggedIn) {
