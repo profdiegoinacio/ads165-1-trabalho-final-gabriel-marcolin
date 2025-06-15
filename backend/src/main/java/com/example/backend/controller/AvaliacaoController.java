@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.Avaliacao;
+import com.example.backend.dto.AvaliacaoDTO;
 import com.example.backend.service.AvaliacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,23 @@ public class AvaliacaoController {
         }
     }
 
+    @GetMapping("/existe")
+    public ResponseEntity<Boolean> avaliacaoExiste(
+            @RequestParam Long usuarioId,
+            @RequestParam Long servicoId
+    ) {
+        boolean existe = avaliacaoService.AvaliacaoExiste(usuarioId, servicoId);
+        return ResponseEntity.ok(existe);
+    }
+
+    @GetMapping("/media/{servicoId}")
+    public ResponseEntity<Double> mediaAvaliacoes(@PathVariable Long servicoId) {
+        Double media = avaliacaoService.obterMediaAvaliacoes(servicoId);
+        return ResponseEntity.ok(media != null ? media : 0.0);
+    }
+
     @PostMapping
-    public ResponseEntity<Avaliacao> criarAvaliacao(@Valid @RequestBody Avaliacao avaliacao) {
+    public ResponseEntity<Avaliacao> criarAvaliacao(@Valid @RequestBody AvaliacaoDTO avaliacao) {
         Avaliacao nova = avaliacaoService.criarAvaliacao(avaliacao);
         return ResponseEntity.ok(nova);
     }

@@ -8,6 +8,8 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import Link from "next/link";
 import { useSession, signIn, signOut } from 'next-auth/react';
 import {fetchUsuarioById, fetchUsuarioByUsername, fetchUsuarios} from "@/api/fetchUsuarios";
+import {criarAvaliacao} from "@/api/fetchAvaliacoes";
+import MediaAvaliacao from "@/app/components/MediaAvaliacao";
 
 export default function Page() {
     const [servicos, setServicos] = useState<any[]>([]);
@@ -143,11 +145,17 @@ export default function Page() {
         }
     };
 
-    const handleEnviarAvaliacao = (dados: { nota: number; comentario: string }) => {
+    const handleEnviarAvaliacao = async (dados: { nota: number; comentario: string }) => {
         if (servicoParaAvaliar === null) return;
 
+        const res = await fetch(`http://localhost:8080/avaliacoes/existe?usuarioId=${usuario.id}&servicoId=${servicoParaAvaliar}`);
+        const jaAvaliou = await res.json();
+        if (jaAvaliou) {
+            alert("Você já avaliou esse serviço.");
+            return;
+        }
+
         console.log("Nova avaliação:", {
-            id: Date.now(),
             servicoId: servicoParaAvaliar,
             usuarioId: usuario.id,
             nota: dados.nota,
@@ -155,8 +163,23 @@ export default function Page() {
             data: new Date(),
         });
 
-        setServicoParaAvaliar(null);
-        alert("Avaliação enviada com sucesso!");
+        try {
+            const avaliacao = {
+                servicoId: servicoParaAvaliar,
+                usuarioId: usuario.id,
+                nota: dados.nota,
+                comentario: dados.comentario,
+                data: new Date(),
+            };
+
+            const AvaliacaoCriada = await criarAvaliacao(avaliacao);
+
+            setServicoParaAvaliar(null);
+            alert("Avaliação enviada com sucesso!");
+        } catch (error) {
+            console.error("Erro ao criar serviço:", error);
+            alert("Erro ao criar serviço. Tente novamente.");
+        }
     };
 
     const handleCancelarAvaliacao = () => {
@@ -176,7 +199,8 @@ export default function Page() {
                             <span className="font-semibold">Criado por:</span> {servico.usuario?.username}
                         </p>
                         <p className="text-gray-700 mt-1">
-                            <span className="font-semibold">Avaliação média:</span>
+                            <span className="font-semibold">Avaliação média:</span>{" "}
+                            <MediaAvaliacao servicoId={servico.id} />
                         </p>
 
                         <Link

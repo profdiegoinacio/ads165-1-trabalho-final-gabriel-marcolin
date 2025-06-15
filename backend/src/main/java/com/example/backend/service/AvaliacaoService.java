@@ -1,6 +1,9 @@
 package com.example.backend.service;
 
 import com.example.backend.domain.Avaliacao;
+import com.example.backend.domain.Servico;
+import com.example.backend.domain.Usuario;
+import com.example.backend.dto.AvaliacaoDTO;
 import com.example.backend.repository.AvaliacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,10 @@ public class AvaliacaoService {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+    @Autowired
+    private ServicoService servicoService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     public List<Avaliacao> filtrarAvaliacoes(Long servicoId, Long usuarioId, Integer notaMinima) {
         List<Avaliacao> todas = avaliacaoRepository.findAll();
@@ -45,10 +52,26 @@ public class AvaliacaoService {
                 .orElseThrow(() -> new NoSuchElementException("Avaliação não encontrada com o ID: " + id));
     }
 
-    public Avaliacao criarAvaliacao(Avaliacao avaliacao) {
-        if (avaliacao.getData() == null) {
-            avaliacao.setData(new Date());
-        }
+    public boolean AvaliacaoExiste(Long servicoId, Long usuarioId) {
+        return avaliacaoRepository.existsByUsuarioIdAndServicoId(servicoId, usuarioId);
+    }
+
+    public Double obterMediaAvaliacoes(Long servicoId) {
+        return avaliacaoRepository.calcularMediaPorServico(servicoId);
+    }
+
+    public Avaliacao criarAvaliacao(AvaliacaoDTO dto) {
+        Servico servico = servicoService.getServicoById(dto.getServicoId());
+
+        Usuario usuario = usuarioService.getUsuarioById(dto.getUsuarioId());
+
+        Avaliacao avaliacao = new Avaliacao();
+        avaliacao.setServico(servico);
+        avaliacao.setUsuario(usuario);
+        avaliacao.setNota(dto.getNota());
+        avaliacao.setComentario(dto.getComentario());
+        avaliacao.setData(dto.getData() != null ? dto.getData() : new Date());
+
         return avaliacaoRepository.save(avaliacao);
     }
 
