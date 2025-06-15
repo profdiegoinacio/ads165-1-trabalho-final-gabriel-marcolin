@@ -13,7 +13,14 @@
 					"name": "ListarTodos",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/servicos",
 							"protocol": "http",
@@ -32,9 +39,16 @@
 					"name": "buscarPorTitulo",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/servicos?titulo=Limpeza",
+							"raw": "http://localhost:8080/servicos?titulo=tes",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -46,7 +60,7 @@
 							"query": [
 								{
 									"key": "titulo",
-									"value": "Limpeza"
+									"value": "tes"
 								}
 							]
 						}
@@ -57,7 +71,14 @@
 					"name": "buscarOrdenandoPorTitulo",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/servicos?ordenarPor=titulo&ordem=asc",
 							"protocol": "http",
@@ -86,9 +107,16 @@
 					"name": "buscarById",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/servicos/1",
+							"raw": "http://localhost:8080/servicos/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -96,7 +124,7 @@
 							"port": "8080",
 							"path": [
 								"servicos",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -106,10 +134,17 @@
 					"name": "CriarServico",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"titulo\": \"Pintura Residencial\",\r\n  \"descricao\": \"Serviço de pintura interna e externa com acabamento profissional. Orçamento sem compromisso.\",\r\n  \"categoria\": \"Construção\",\r\n  \"preco\": 250.0,\r\n  \"telefone\": \"5499911223\",\r\n  \"idUsuario\" : 1\r\n}",
+							"raw": "{\r\n  \"titulo\": \"Pintura Residencial\",\r\n  \"descricao\": \"Serviço de pintura interna e externa com acabamento profissional. Orçamento sem compromisso.\",\r\n  \"categoria\": \"Construção\",\r\n  \"preco\": 250.0,\r\n  \"telefone\": \"5499911223\",\r\n  \"usuarioId\" : 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -134,10 +169,17 @@
 					"name": "AtualizarServicoTotalmente",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 2,\r\n  \"titulo\": \"Serviço de Pintura\",\r\n  \"descricao\": \"Pintura residencial e comercial com materiais de qualidade.\",\r\n  \"categoria\": \"Reformas\",\r\n  \"preco\": 250.0,\r\n  \"telefone\": \"54999887766\"\r\n}",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"titulo\": \"Serviço de Pintura\",\r\n  \"descricao\": \"Pintura residencial e comercial com materiais de qualidade.\",\r\n  \"categoria\": \"Reformas\",\r\n  \"preco\": 250.0,\r\n  \"telefone\": \"54999887766\",\r\n  \"usuarioId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -162,7 +204,14 @@
 					"name": "AtualizarServicoParcialmente",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"titulo\": \"Nova descrição de Limpeza de Jardim\",\r\n  \"preco\": 150.00,\r\n  \"telefone\": \"54999123456\"\r\n}",
@@ -191,7 +240,14 @@
 					"name": "DeletarServiço",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -202,7 +258,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/servicos/1",
+							"raw": "http://localhost:8080/servicos/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -210,7 +266,7 @@
 							"port": "8080",
 							"path": [
 								"servicos",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -225,7 +281,14 @@
 					"name": "ListarTodos",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/usuarios",
 							"protocol": "http",
@@ -244,9 +307,16 @@
 					"name": "buscarPorNome",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/usuarios?nome=Carlos",
+							"raw": "http://localhost:8080/usuarios?nome=admin",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -258,8 +328,36 @@
 							"query": [
 								{
 									"key": "nome",
-									"value": "Carlos"
+									"value": "admin"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscarPorNomeTeste",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/nome/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"nome",
+								"admin"
 							]
 						}
 					},
@@ -269,9 +367,16 @@
 					"name": "buscarOrdenandoPorEmail",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/usuarios?ordenarPor=email&ordem=asc",
+							"raw": "http://localhost:8080/usuarios?ordenarPor=nome&ordem=asc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -283,7 +388,7 @@
 							"query": [
 								{
 									"key": "ordenarPor",
-									"value": "email"
+									"value": "nome"
 								},
 								{
 									"key": "ordem",
@@ -298,7 +403,14 @@
 					"name": "buscarById",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/usuarios/1",
 							"protocol": "http",
@@ -315,41 +427,20 @@
 					"response": []
 				},
 				{
-					"name": "CriarUsuario",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"tipoUsuario\": \"C\",\r\n  \"nome\": \"Ana Clara\",\r\n  \"email\": \"ana.clara@email.com\",\r\n  \"senha\": \"minhaSenhaSegura123\",\r\n  \"telefone\": \"54999112233\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/usuarios",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "AtualizarUsuarioTotalmente",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"tipoUsuario\": \"P\",\r\n  \"nome\": \"Ana Clara Lima\",\r\n  \"email\": \"ana.lima@email.com\",\r\n  \"senha\": \"novaSenha456\",\r\n  \"telefone\": \"54999887766\"\r\n}",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"admin new\",\r\n  \"password\": \"novaSenha456\",\r\n  \"roles\": [\"ROLE_USER\", \"ROLE_ADMIN\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -374,10 +465,17 @@
 					"name": "AtualizarUsuarioParcialmente",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"novo.email@email.com\",\r\n  \"telefone\": \"54999000000\"\r\n}",
+							"raw": "{\r\n  \"username\" : \"maria\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -385,7 +483,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuarios/3",
+							"raw": "http://localhost:8080/usuarios/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -393,7 +491,7 @@
 							"port": "8080",
 							"path": [
 								"usuarios",
-								"3"
+								"2"
 							]
 						}
 					},
@@ -403,7 +501,14 @@
 					"name": "DeletarUsuario",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -414,7 +519,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuarios/1",
+							"raw": "http://localhost:8080/usuarios/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -422,7 +527,7 @@
 							"port": "8080",
 							"path": [
 								"usuarios",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -437,7 +542,14 @@
 					"name": "ListarTodos",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/avaliacoes",
 							"protocol": "http",
@@ -456,7 +568,14 @@
 					"name": "buscarPorUsuario",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/avaliacoes?usuarioId=3",
 							"protocol": "http",
@@ -481,7 +600,14 @@
 					"name": "buscarOrdenandoPorNota",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/avaliacoes?ordenarPor=nota&ordem=asc",
 							"protocol": "http",
@@ -510,7 +636,14 @@
 					"name": "buscarById",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/avaliacoes/1",
 							"protocol": "http",
@@ -530,10 +663,17 @@
 					"name": "CriarAvaliacao",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"servicoId\": 1,\r\n  \"usuarioId\": 2,\r\n  \"nota\": 4,\r\n  \"comentario\": \"Serviço excelente!\",\r\n  \"data\": \"2025-04-22T15:00:00.000+00:00\"\r\n}",
+							"raw": "{\r\n  \"servicoId\": 2,\r\n  \"usuarioId\": 2,\r\n  \"nota\": 4,\r\n  \"comentario\": \"Serviço excelente!\",\r\n  \"data\": \"2025-04-22T15:00:00.000+00:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -558,10 +698,17 @@
 					"name": "AtualizarAvaliacaoTotalmente",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"servicoId\": 1,\r\n  \"usuarioId\": 1,\r\n  \"nota\": 3,\r\n  \"comentario\": \"Bom atendimento, mas pode melhorar.\",\r\n  \"data\": \"2025-04-21T10:30:00.000+00:00\"\r\n}",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"servicoId\": 3,\r\n  \"usuarioId\": 1,\r\n  \"nota\": 3,\r\n  \"comentario\": \"Bom atendimento, mas pode melhorar.\",\r\n  \"data\": \"2025-04-21T10:30:00.000+00:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -586,7 +733,14 @@
 					"name": "AtualizarAvaliacaoParcialmente",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"nota\": 5,\r\n  \"comentario\": \"Mudando para nota máxima após nova experiência.\"\r\n}",
@@ -597,7 +751,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/avaliacoes/3",
+							"raw": "http://localhost:8080/avaliacoes/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -605,7 +759,7 @@
 							"port": "8080",
 							"path": [
 								"avaliacoes",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -615,7 +769,14 @@
 					"name": "DeletarAvaliacao",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImpvYW8iLCJpYXQiOjE3NDk0MDQ4MDIsImV4cCI6MTc0OTQwODQwMn0.B1ceaumeY7eE8MVfXlbuqH5xeSYDi-Vu-2wrZfLhV0g",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -635,6 +796,183 @@
 							"path": [
 								"avaliacoes",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin123\",\r\n  \"roles\": [\"admin\", \"user\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test 1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUwMDIyMjQ1LCJleHAiOjE3NTAwMjU4NDV9.7b4LryYyqhDgCUxzx8Uw0GDKpdZ4vxxr2MVhwa4R1IQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/test-security/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"test-security",
+								"hello"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test 2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUwMDIyMjQ1LCJleHAiOjE3NTAwMjU4NDV9.7b4LryYyqhDgCUxzx8Uw0GDKpdZ4vxxr2MVhwa4R1IQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/test-security/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"test-security",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUwMDIyMjQ1LCJleHAiOjE3NTAwMjU4NDV9.7b4LryYyqhDgCUxzx8Uw0GDKpdZ4vxxr2MVhwa4R1IQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/test-security/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"test-security",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"joao\",\r\n  \"password\": \"123456\",\r\n  \"roles\": [\"admin\", \"user\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
 							]
 						}
 					},
