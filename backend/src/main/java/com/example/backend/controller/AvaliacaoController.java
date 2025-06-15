@@ -51,6 +51,11 @@ public class AvaliacaoController {
         return ResponseEntity.ok(existe);
     }
 
+    @GetMapping("/existe-por-servico/{servicoId}")
+    public boolean existeAvaliacaoPorServico(@PathVariable Long servicoId) {
+        return avaliacaoService.AvaliacaoExistePorServico(servicoId);
+    }
+
     @GetMapping("/media/{servicoId}")
     public ResponseEntity<Double> mediaAvaliacoes(@PathVariable Long servicoId) {
         Double media = avaliacaoService.obterMediaAvaliacoes(servicoId);

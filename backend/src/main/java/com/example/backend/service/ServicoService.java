@@ -5,6 +5,7 @@ import com.example.backend.domain.Usuario;
 import com.example.backend.dto.ServicoDTO;
 import com.example.backend.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,6 +18,9 @@ public class ServicoService {
     private ServicoRepository repository;
     @Autowired
     private UsuarioService usuarioService;
+    @Lazy
+    @Autowired
+    private AvaliacaoService avaliacaoService;
 
     public List<Servico> filtrarServicos(String titulo, Double precoMinimo, List<String> categorias) {
         return repository.findAll().stream()
@@ -76,6 +80,9 @@ public class ServicoService {
 
     public void deletarServico(Long id) {
         Servico servico = getServicoById(id);
+        if(avaliacaoService.AvaliacaoExistePorServico(id)) {
+            throw new RuntimeException("Não é possível remover o serviço. Há avaliações vinculadas.");
+        }
         repository.delete(servico);
     }
 

@@ -107,16 +107,17 @@ Este projeto é uma aplicação web para gestão e contratação de serviços co
 
 ### Avaliações
 
-| Método | Rota                            | Descrição                                                        |
-|--------|---------------------------------|------------------------------------------------------------------|
-| GET    | `/avaliacoes`                   | Lista todas as avaliações                                        |
-| GET    | `/avaliacoes/{id}`              | Retorna uma avaliação por ID                                     |
-| GET    | `/avaliacoes/existe`            | Retorna se existe uma avaliação para determinado serviço/usuário |
-| GET    | `/avaliacoes/media/{servicoid}` | Retorna a média de avaliações de um serviço                      |
-| POST   | `/avaliacoes`                   | Cadastra uma nova avaliação                                      |
-| PUT    | `/avaliacoes`                   | Atualiza uma avaliação existente                                 |
-| PATCH  | `/avaliacoes/{id}`              | Atualiza parcialmente por ID                                     |
-| DELETE | `/avaliacoes/{id}`              | Remove uma avaliação por ID                                      |
+| Método | Rota                                            | Descrição                                                        |
+|--------|-------------------------------------------------|------------------------------------------------------------------|
+| GET    | `/avaliacoes`                                   | Lista todas as avaliações                                        |
+| GET    | `/avaliacoes/{id}`                              | Retorna uma avaliação por ID                                     |
+| GET    | `/avaliacoes/existe`                            | Retorna se existe uma avaliação para determinado serviço/usuário |
+| GET    | `/avaliacoes/existe-por-servico/{servicoId}`    | Retorna se existe uma avaliação para determinado serviço         |
+| GET    | `/avaliacoes/media/{servicoid}`                 | Retorna a média de avaliações de um serviço                      |
+| POST   | `/avaliacoes`                                   | Cadastra uma nova avaliação                                      |
+| PUT    | `/avaliacoes`                                   | Atualiza uma avaliação existente                                 |
+| PATCH  | `/avaliacoes/{id}`                              | Atualiza parcialmente por ID                                     |
+| DELETE | `/avaliacoes/{id}`                              | Remove uma avaliação por ID                                      |
 
 ### Autenticação
 

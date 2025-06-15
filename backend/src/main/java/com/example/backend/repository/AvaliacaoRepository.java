@@ -12,4 +12,6 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 
     @Query("SELECT AVG(a.nota) FROM Avaliacao a WHERE a.servico.id = :servicoId")
     Double calcularMediaPorServico(@Param("servicoId") Long servicoId);
+
+    boolean existsByServicoId(Long servicoId);
 }

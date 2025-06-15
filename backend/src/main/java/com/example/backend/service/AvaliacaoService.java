@@ -56,6 +56,10 @@ public class AvaliacaoService {
         return avaliacaoRepository.existsByUsuarioIdAndServicoId(servicoId, usuarioId);
     }
 
+    public boolean AvaliacaoExistePorServico(Long servicoId) {
+        return avaliacaoRepository.existsByServicoId(servicoId);
+    }
+
     public Double obterMediaAvaliacoes(Long servicoId) {
         return avaliacaoRepository.calcularMediaPorServico(servicoId);
     }

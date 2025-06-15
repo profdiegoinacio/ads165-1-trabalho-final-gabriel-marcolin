@@ -130,11 +130,19 @@ export default function Page() {
         const temContrato = usuarios.some(usuario =>
             usuario.servicosContratados?.some((servico: any) => servico.id === id)
         );
+        const resposta = await fetch(`http://localhost:8080/avaliacoes/existe-por-servico/${id}`);
+        const temAvaliacao = await resposta.json();
 
         if (temContrato) {
             alert("Não é possível remover esse serviço pois algum usuário já o contratou.");
             return;
         }
+
+        if (temAvaliacao) {
+            alert("Não é possível remover esse serviço pois ele já possui avaliações.");
+            return;
+        }
+
         try {
             await removerServico(id);
             const atualizados = servicos.filter(s => s.id !== id);
