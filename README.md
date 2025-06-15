@@ -56,6 +56,10 @@ Este projeto é uma aplicação web para gestão e contratação de serviços co
    ```
    http://localhost:3000
    ```
+   
+5. Os dados de acesso são:
+- admin (admin123)
+- user (user123)
 
 ## Decisões arquiteturais
 
@@ -66,7 +70,7 @@ Este projeto é uma aplicação web para gestão e contratação de serviços co
    - `service` – lógica de negócio
    - `model` – entidades do sistema
    - `dto` – transferência de dados
-   - `repository(WIP)` – será feito caso tenhamos integração com JPA
+   - `repository` – comunicação com o banco de dados
 
 ### Frontend
 - Framework: Next.js 15 (App Router)
@@ -92,25 +96,34 @@ Este projeto é uma aplicação web para gestão e contratação de serviços co
 
 ### Usuários
 
-| Método | Rota               | Descrição                          |
-|--------|--------------------|------------------------------------|
-| GET    | `/usuarios`        | Lista todos os usuários            |
-| GET    | `/usuarios/{id}`   | Retorna um usuário por ID          |
-| POST   | `/usuarios`        | Cadastra um novo usuário           |
-| PUT    | `/usuarios`        | Atualiza um usuário existente      |
-| PATCH  | `/usuarios/{id}`   | Atualiza parcialmente por ID       |
-| DELETE | `/usuarios/{id}`   | Remove um usuário por ID           |
+| Método | Rota                        | Descrição                            |
+|--------|-----------------------------|--------------------------------------|
+| GET    | `/usuarios`                 | Lista todos os usuários              |
+| GET    | `/usuarios/{id}`            | Retorna um usuário por ID            |
+| GET    | `/usuarios/nome/{username}` | Retorna um usuário pelo seu username |
+| PUT    | `/usuarios`                 | Atualiza um usuário existente        |
+| PATCH  | `/usuarios/{id}`            | Atualiza parcialmente por ID         |
+| DELETE | `/usuarios/{id}`            | Remove um usuário por ID             |
 
 ### Avaliações
 
-| Método | Rota                 | Descrição                            |
-|--------|----------------------|--------------------------------------|
-| GET    | `/avaliacoes`        | Lista todas as avaliações            |
-| GET    | `/avaliacoes/{id}`   | Retorna uma avaliação por ID         |
-| POST   | `/avaliacoes`        | Cadastra uma nova avaliação          |
-| PUT    | `/avaliacoes`        | Atualiza uma avaliação existente     |
-| PATCH  | `/avaliacoes/{id}`   | Atualiza parcialmente por ID         |
-| DELETE | `/avaliacoes/{id}`   | Remove uma avaliação por ID          |
+| Método | Rota                            | Descrição                                                        |
+|--------|---------------------------------|------------------------------------------------------------------|
+| GET    | `/avaliacoes`                   | Lista todas as avaliações                                        |
+| GET    | `/avaliacoes/{id}`              | Retorna uma avaliação por ID                                     |
+| GET    | `/avaliacoes/existe`            | Retorna se existe uma avaliação para determinado serviço/usuário |
+| GET    | `/avaliacoes/media/{servicoid}` | Retorna a média de avaliações de um serviço                      |
+| POST   | `/avaliacoes`                   | Cadastra uma nova avaliação                                      |
+| PUT    | `/avaliacoes`                   | Atualiza uma avaliação existente                                 |
+| PATCH  | `/avaliacoes/{id}`              | Atualiza parcialmente por ID                                     |
+| DELETE | `/avaliacoes/{id}`              | Remove uma avaliação por ID                                      |
+
+### Autenticação
+
+| Método | Rota             | Descrição            |
+|--------|------------------|----------------------|
+| POST   | `/auth/login`    | Rota de Login        |
+| POST   | `/auth/register` | Rota de registrar-se |
 
 ### Exemplo de requisição: `POST /servicos`
 
@@ -132,7 +145,8 @@ Este projeto é uma aplicação web para gestão e contratação de serviços co
 - Detalhamento e contratação com confirmação de senha
 - Histórico de serviços contratados (em progresso)
 - Avaliações de serviços prestados
-- Integração futura com banco de dados e autenticação
+- Segurança usando JWT para o backend, e NextAuthJS para o frontend
+- Conexão com banco de dados PostgreSQL
 
 ## Autor
 

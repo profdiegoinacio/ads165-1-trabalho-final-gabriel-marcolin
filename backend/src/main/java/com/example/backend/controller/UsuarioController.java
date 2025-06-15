@@ -23,12 +23,11 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<Usuario>> buscarUsuarios(
             @RequestParam(name = "nome", required = false) String nome,
-            @RequestParam(name = "email", required = false) String email,
             @RequestParam(name = "roles", required = false) String role,
             @RequestParam(name = "ordenarPor", defaultValue = "id") String ordenarPor,
             @RequestParam(name = "ordem", defaultValue = "asc") String ordem) {
 
-        List<Usuario> filtrados = usuarioService.filtrarUsuarios(nome, /*email,*/ role);
+        List<Usuario> filtrados = usuarioService.filtrarUsuarios(nome, role);
         filtrados = usuarioService.ordenarUsuarios(filtrados, ordenarPor, ordem);
         return ResponseEntity.ok(filtrados);
     }
@@ -39,15 +38,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/nome/{username}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable String username) {
+    public ResponseEntity<Usuario> buscarPorUsername(@PathVariable String username) {
         return ResponseEntity.ok(usuarioService.getUsuarioByUsername(username));
     }
-
-    /*
-    @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.criarUsuario(usuario));
-    }*/
 
     @PutMapping
     public ResponseEntity<Usuario> atualizarUsuario(@RequestBody UsuarioUpdateDTO dto) {
@@ -71,15 +64,6 @@ public class UsuarioController {
         try {
             usuarioService.excluirUsuario(id);
             return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/{usuarioId}/contratar/{servicoId}")
-    public ResponseEntity<Usuario> contratarServico(@PathVariable Long usuarioId, @RequestBody Servico servico) {
-        try {
-            return ResponseEntity.ok(usuarioService.adicionarServicoContratado(usuarioId, servico));
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }

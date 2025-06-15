@@ -32,18 +32,9 @@ public class Usuario implements UserDetails {
     @Column(nullable = false, length = 100)
     private String username;
 
-    /*@NotBlank(message="O email do usuário não pode ser nulo")
-    @Size(min = 3, max = 50, message = "O email deve ter entre 3 e 50 caracteres.")
-    @Column(nullable = false, length = 50)
-    private String email;*/
-
     @NotBlank(message="A senha do usuário não pode ser nula")
     @Column(nullable = false)
     private String password;
-
-    /*@Size(max = 11, message = "O telefone inserido é muito grande")
-    @Column
-    private String telefone;*/
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -56,24 +47,6 @@ public class Usuario implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "servico_id")
     )
     private List<Servico> servicosContratados;
-
-    /*public Usuario(Long id, Set<String> roles, String username, String email, String password, String telefone) {
-        this.id = id;
-        this.roles = roles;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.telefone = telefone;
-    }
-
-    //Construtor sem o telefone
-    public Usuario(Long id, Set<String> roles, String username, String email, String password) {
-        this.id = id;
-        this.roles = roles;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }*/
 
     public Usuario(String username, String password, Set<String> roles) {
         this.username = username;
@@ -109,14 +82,6 @@ public class Usuario implements UserDetails {
         this.username = nome;
     }
 
-    /*public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }*/
-
     @Override
     public String getPassword() {
         return password;
@@ -125,14 +90,6 @@ public class Usuario implements UserDetails {
     public void setPassword(String senha) {
         this.password = senha;
     }
-
-    /*public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }*/
 
     public List<Servico> getServicosCriados() {
         return servicosCriados;

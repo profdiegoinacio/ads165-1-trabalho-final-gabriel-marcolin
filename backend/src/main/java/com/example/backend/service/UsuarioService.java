@@ -24,10 +24,9 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private ServicoService servicoService;
 
-    public List<Usuario> filtrarUsuarios(String nome, /*String email,*/ String role) {
+    public List<Usuario> filtrarUsuarios(String nome, String role) {
         return usuarioRepository.findAll().stream()
                 .filter(u -> nome == null || u.getUsername().toLowerCase().contains(nome.toLowerCase()))
-                /*.filter(u -> email == null || u.getEmail().toLowerCase().contains(email.toLowerCase()))*/
                 .filter(u -> role == null || u.getRoles().contains(role))
                 .collect(Collectors.toList());
     }
@@ -38,7 +37,6 @@ public class UsuarioService implements UserDetailsService {
                     int comparison = switch (ordenarPor) {
                         case "id" -> Long.compare(u1.getId(), u2.getId());
                         case "nome" -> u1.getUsername().compareToIgnoreCase(u2.getUsername());
-                        /*case "email" -> u1.getEmail().compareToIgnoreCase(u2.getEmail());*/
                         case "roles" -> u1.getRoles().toString().compareToIgnoreCase(u2.getRoles().toString());
                         default -> 0;
                     };
@@ -55,10 +53,6 @@ public class UsuarioService implements UserDetailsService {
     public Usuario getUsuarioByUsername(String username) {
         return usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o nome: " + username));
-    }
-
-    public Usuario criarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
     }
 
     public Usuario atualizarUsuario(UsuarioUpdateDTO dto) {
@@ -101,21 +95,9 @@ public class UsuarioService implements UserDetailsService {
                     }
                 }
                 case "username" -> usuario.setUsername((String) value);
-                /*case "email" -> usuario.setEmail((String) value);*/
                 case "password" -> usuario.setPassword((String) value);
-                /*case "telefone" -> usuario.setTelefone((String) value);*/
                 default -> throw new IllegalArgumentException("Campo inválido: " + key);
             }
-        }
-
-        return usuarioRepository.save(usuario);
-    }
-
-    public Usuario adicionarServicoContratado(Long usuarioId, Servico servico) {
-        Usuario usuario = getUsuarioById(usuarioId);
-
-        if (!usuario.getServicosCriados().contains(servico)) {
-            usuario.getServicosCriados().add(servico);
         }
 
         return usuarioRepository.save(usuario);
