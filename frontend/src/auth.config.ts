@@ -9,15 +9,15 @@ export const authConfig = {
         // O callback `authorized` é usado para proteger rotas via middleware
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isOnDashboard = nextUrl.pathname.startsWith('/dashboard'); // Exemplo de rota protegida
+            const isOnServicos = nextUrl.pathname.startsWith('/servicos'); // Exemplo de rota protegida
 
-            if (isOnDashboard) {
+            if (isOnServicos) {
                 if (isLoggedIn) return true;
                 return false; // Redireciona usuários não logados para a página de login
             } else if (isLoggedIn) {
-                // Se logado e tentando acessar /login, redirecionar para dashboard (opcional)
+                // Se logado e tentando acessar /login, redirecionar para servicos (opcional)
                 if (nextUrl.pathname === '/login' || nextUrl.pathname === '/register') {
-                    return Response.redirect(new URL('/dashboard', nextUrl));
+                    return Response.redirect(new URL('/servicos', nextUrl));
                 }
             }
             return true; // Permite acesso a outras páginas (públicas ou não cobertas)
