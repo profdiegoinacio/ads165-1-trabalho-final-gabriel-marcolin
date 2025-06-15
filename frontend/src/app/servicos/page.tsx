@@ -6,6 +6,8 @@ import AvaliacaoForm from "@/app/components/AvaliacaoForm";
 import {criarServico, EditarServico, fetchTodosServicos, removerServico} from "@/api/fetchServicos";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import Link from "next/link";
+import { useSession, signIn, signOut } from 'next-auth/react';
+import {fetchUsuarioById, fetchUsuarioByUsername, fetchUsuarios} from "@/api/fetchUsuarios";
 
 export default function Page() {
     const [servicos, setServicos] = useState<any[]>([]);
@@ -13,23 +15,46 @@ export default function Page() {
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [servicoParaAvaliar, setServicoParaAvaliar] = useState<number | null>(null);
     const [servicoParaEditar, setServicoParaEditar] = useState<any | null>(null);
+    const { data: session, status } = useSession();
+    const [nomeUsuario, setNomeUsuario] = useState<string|any>(null);
+    const [usuario, setUsuario] = useState<any>(null);
+    const [usuarios, setUsuarios] = useState<any[]>([]); //Para poder evitar erro ao remover
 
-    const [usuarios, setUsuarios] = useState([
-        {
-            id: 1,
-            nome: "João da Silva",
-            tipoUsuario: "C",
-            servicosContratados: [1, 3]
-        },
-        {
-            id: 2,
-            nome: "Maria Souza",
-            tipoUsuario: "P",
-            servicosContratados: []
+    useEffect(() => {
+        if (session?.user?.username) {
+            setNomeUsuario(session.user.username);
         }
-    ]);
+    }, [session]);
 
-    const usuarioLogado = usuarios[1];
+    useEffect(() => {
+        async function carregarUsuario() {
+            if (!nomeUsuario) return;
+
+            try {
+                const data = await fetchUsuarioByUsername(nomeUsuario);
+                setUsuario(data);
+                console.log(nomeUsuario)
+                console.log(usuario)
+            } catch (error) {
+                console.error("Erro ao buscar usuário:", error);
+            }
+        }
+
+        carregarUsuario();
+    }, [nomeUsuario]);
+
+    //Para poder evitar erro ao remover
+    useEffect(() => {
+        async function carregarUsuarios() {
+            try {
+                const dadosUsuarios = await fetchUsuarios();
+                setUsuarios(dadosUsuarios);
+            } catch (error) {
+                console.error("Erro ao carregar usuários:", error);
+            }
+        }
+        carregarUsuarios();
+    }, []);
 
     useEffect(() => {
         async function carregarServicos() {
@@ -43,10 +68,11 @@ export default function Page() {
             }
         }
 
+
         carregarServicos();
     }, []);
 
-    if (isLoading) {
+    if (isLoading || !usuario) {
         return <LoadingSpinner />;
     }
 
@@ -55,10 +81,13 @@ export default function Page() {
         try {
             const servicoComUsuario = {
                 ...novoServico,
-                idUsuario: usuarioLogado.id,
+                usuarioId: usuario.id,
             };
 
+            console.log("Criando serviço para usuário:", servicoComUsuario)
             const servicoCriado = await criarServico(servicoComUsuario);
+
+            servicoCriado.usuario = usuario;
 
             setServicos([...servicos, servicoCriado]);
             setMostrarFormulario(false);
@@ -72,7 +101,7 @@ export default function Page() {
         try {
             const servicoEditado = await EditarServico(servicoAtualizado);
 
-            servicoEditado.idUsuario = servicoAtualizado.idUsuario;
+            servicoEditado.usuario = usuario;
 
             setServicos(servicos.map(s => s.id === servicoEditado.id ? servicoEditado : s));
             alert("Serviço atualizado com sucesso!");
@@ -87,14 +116,22 @@ export default function Page() {
     };
 
     const podeAvaliar = (servicoId: number) => {
-        return usuarioLogado.servicosContratados.includes(servicoId);
+        return usuario.servicosContratados.some((item: any) => item.id === servicoId);
     };
 
     const servicoProprio = (servico: any) => {
-        return usuarioLogado.id == servico.idUsuario;
-    }
+        return usuario && servico.usuario && usuario.id === servico.usuario.id;
+    };
 
     const handleRemoverServico = async (id: number) => {
+        const temContrato = usuarios.some(usuario =>
+            usuario.servicosContratados?.some((servico: any) => servico.id === id)
+        );
+
+        if (temContrato) {
+            alert("Não é possível remover esse serviço pois algum usuário já o contratou.");
+            return;
+        }
         try {
             await removerServico(id);
             const atualizados = servicos.filter(s => s.id !== id);
@@ -112,7 +149,7 @@ export default function Page() {
         console.log("Nova avaliação:", {
             id: Date.now(),
             servicoId: servicoParaAvaliar,
-            usuarioId: usuarioLogado.id,
+            usuarioId: usuario.id,
             nota: dados.nota,
             comentario: dados.comentario,
             data: new Date(),
@@ -136,10 +173,10 @@ export default function Page() {
                         <h2 className="text-xl font-semibold mb-2">{servico.titulo}</h2>
                         <p className="text-gray-600 mb-2">{servico.descricao}</p>
                         <p className="text-gray-700">
-                            <span className="font-semibold">Criado por:</span> {servico.idUsuario /*Botar o nome quando tivermos a integração com banco*/}
+                            <span className="font-semibold">Criado por:</span> {servico.usuario?.username}
                         </p>
                         <p className="text-gray-700 mt-1">
-                            <span className="font-semibold">Avaliação média:</span> {/*Buscar a avaliação quando tivermos integração com banco*/}
+                            <span className="font-semibold">Avaliação média:</span>
                         </p>
 
                         <Link
@@ -187,7 +224,7 @@ export default function Page() {
                 ))}
             </div>
 
-            {usuarioLogado.tipoUsuario === "P" && (
+            {usuario?.roles?.includes("ROLE_ADMIN")  && (
                 <button
                     onClick={() => setMostrarFormulario(true)}
                     className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition"
@@ -209,7 +246,7 @@ export default function Page() {
                         onEditar={(servicoAtualizado) => {
                             handleEditarServico({
                                 ...servicoAtualizado,
-                                idUsuario: usuarioLogado.id,
+                                usuarioId: usuario.id,
                             });
                             setServicoParaEditar(null);
                         }}

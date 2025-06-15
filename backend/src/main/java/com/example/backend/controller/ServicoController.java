@@ -1,6 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.Servico;
+import com.example.backend.dto.ServicoDTO;
+import com.example.backend.dto.ServicoResponseDTO;
 import com.example.backend.service.ServicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class ServicoController {
     private ServicoService servicoService;
 
     @GetMapping
-    public ResponseEntity<List<Servico>> buscarServicos(
+    public ResponseEntity<List<ServicoResponseDTO>> buscarServicos(
             @RequestParam(name = "titulo", required = false) String titulo,
             @RequestParam(name = "precoMinimo", required = false) Double precoMinimo,
             @RequestParam(name = "categoria", required = false) List<String> categorias,
@@ -29,21 +31,26 @@ public class ServicoController {
         List<Servico> servicosFiltrados = servicoService.filtrarServicos(titulo, precoMinimo, categorias);
         servicosFiltrados = servicoService.ordenarServicos(servicosFiltrados, ordenarPor, ordem);
 
-        return ResponseEntity.ok(servicosFiltrados);
+        List<ServicoResponseDTO> dtoList = servicosFiltrados.stream()
+                .map(ServicoResponseDTO::new)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Servico> buscarServicoPorId(@PathVariable Long id) {
+    public ResponseEntity<ServicoResponseDTO> buscarServicoPorId(@PathVariable Long id) {
         try {
             Servico servico = servicoService.getServicoById(id);
-            return ResponseEntity.ok(servico);
+            ServicoResponseDTO dto = new ServicoResponseDTO(servico);
+            return ResponseEntity.ok(dto);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Servico> criarServico(@Valid @RequestBody Servico servico) {
+    public ResponseEntity<Servico> criarServico(@Valid @RequestBody ServicoDTO servico) {
         Servico novoServico = servicoService.criarServico(servico);
         return ResponseEntity.ok(novoServico);
     }
@@ -59,12 +66,14 @@ public class ServicoController {
     }
 
     @PutMapping
-    public ResponseEntity<Servico> atualizarServico(@Valid @RequestBody Servico servico) {
+    public ResponseEntity<Servico> atualizarServico(@Valid @RequestBody ServicoDTO dto) {
         try {
-            Servico servicoAtualizado = servicoService.atualizarServico(servico);
+            Servico servicoAtualizado = servicoService.atualizarServico(dto);
             return ResponseEntity.ok(servicoAtualizado);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

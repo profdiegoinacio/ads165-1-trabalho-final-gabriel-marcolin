@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.domain.Servico;
 import com.example.backend.domain.Usuario;
+import com.example.backend.dto.UsuarioUpdateDTO;
 import com.example.backend.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.getUsuarioById(id));
     }
 
+    @GetMapping("/nome/{username}")
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable String username) {
+        return ResponseEntity.ok(usuarioService.getUsuarioByUsername(username));
+    }
+
     /*
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario) {
@@ -44,8 +50,9 @@ public class UsuarioController {
     }*/
 
     @PutMapping
-    public ResponseEntity<Usuario> atualizarUsuario(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.atualizarUsuario(usuario));
+    public ResponseEntity<Usuario> atualizarUsuario(@RequestBody UsuarioUpdateDTO dto) {
+        Usuario atualizado = usuarioService.atualizarUsuario(dto);
+        return ResponseEntity.ok(atualizado);
     }
 
     @PatchMapping("/{id}")

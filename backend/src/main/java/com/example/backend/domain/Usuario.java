@@ -1,5 +1,6 @@
 package com.example.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -45,6 +46,15 @@ public class Usuario implements UserDetails {
     private String telefone;*/
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Servico> servicosCriados;
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuarios_servicos_contratados",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "servico_id")
+    )
     private List<Servico> servicosContratados;
 
     /*public Usuario(Long id, Set<String> roles, String username, String email, String password, String telefone) {
@@ -124,6 +134,14 @@ public class Usuario implements UserDetails {
         this.telefone = telefone;
     }*/
 
+    public List<Servico> getServicosCriados() {
+        return servicosCriados;
+    }
+
+    public void setServicosCriados(List<Servico> servicosContratados) {
+        this.servicosCriados = servicosContratados;
+    }
+
     public List<Servico> getServicosContratados() {
         return servicosContratados;
     }
@@ -131,8 +149,6 @@ public class Usuario implements UserDetails {
     public void setServicosContratados(List<Servico> servicosContratados) {
         this.servicosContratados = servicosContratados;
     }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

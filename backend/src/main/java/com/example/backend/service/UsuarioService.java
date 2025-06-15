@@ -2,8 +2,10 @@ package com.example.backend.service;
 
 import com.example.backend.domain.Servico;
 import com.example.backend.domain.Usuario;
+import com.example.backend.dto.UsuarioUpdateDTO;
 import com.example.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +19,10 @@ public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Lazy
+    @Autowired
+    private ServicoService servicoService;
 
     public List<Usuario> filtrarUsuarios(String nome, /*String email,*/ String role) {
         return usuarioRepository.findAll().stream()
@@ -46,15 +52,30 @@ public class UsuarioService implements UserDetailsService {
                 .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + id));
     }
 
+    public Usuario getUsuarioByUsername(String username) {
+        return usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o nome: " + username));
+    }
+
     public Usuario criarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario atualizarUsuario(Usuario usuario) {
-        if (!usuarioRepository.existsById(usuario.getId())) {
-            throw new NoSuchElementException("Usuário não encontrado com o ID: " + usuario.getId());
+    public Usuario atualizarUsuario(UsuarioUpdateDTO dto) {
+        Usuario usuarioExistente = usuarioRepository.findById(dto.getId())
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + dto.getId()));
+
+        usuarioExistente.setUsername(dto.getUsername());
+        usuarioExistente.setPassword(dto.getPassword());
+
+        if (dto.getServicosContratados() != null) {
+            List<Servico> servicos = dto.getServicosContratados().stream()
+                    .map(id -> servicoService.getServicoById(id))
+                    .collect(Collectors.toList());
+            usuarioExistente.setServicosContratados(servicos);
         }
-        return usuarioRepository.save(usuario);
+
+        return usuarioRepository.save(usuarioExistente);
     }
 
     public Usuario atualizarParcialmente(Long id, Map<String, Object> fields) {
@@ -93,8 +114,8 @@ public class UsuarioService implements UserDetailsService {
     public Usuario adicionarServicoContratado(Long usuarioId, Servico servico) {
         Usuario usuario = getUsuarioById(usuarioId);
 
-        if (!usuario.getServicosContratados().contains(servico)) {
-            usuario.getServicosContratados().add(servico);
+        if (!usuario.getServicosCriados().contains(servico)) {
+            usuario.getServicosCriados().add(servico);
         }
 
         return usuarioRepository.save(usuario);

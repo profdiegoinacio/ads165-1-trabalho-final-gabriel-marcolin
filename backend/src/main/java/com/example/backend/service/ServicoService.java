@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.domain.Servico;
 import com.example.backend.domain.Usuario;
+import com.example.backend.dto.ServicoDTO;
 import com.example.backend.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,18 +46,31 @@ public class ServicoService {
                 .orElseThrow(() -> new NoSuchElementException("Serviço não encontrado com o ID: " + id));
     }
 
-    public Servico criarServico(Servico servico) {
+    public Servico criarServico(ServicoDTO dto) {
+        Usuario usuario = usuarioService.getUsuarioById(dto.getUsuarioId());
+
+        Servico servico = new Servico();
+        servico.setTitulo(dto.getTitulo());
+        servico.setDescricao(dto.getDescricao());
+        servico.setCategoria(dto.getCategoria());
+        servico.setPreco(dto.getPreco());
+        servico.setTelefone(dto.getTelefone());
+        servico.setUsuario(usuario);
+
         return repository.save(servico);
     }
+    public Servico atualizarServico(ServicoDTO dto) {
+        Servico existente = getServicoById(dto.getId());
 
-    public Servico atualizarServico(Servico servico) {
-        Servico existente = getServicoById(servico.getId());
-        existente.setTitulo(servico.getTitulo());
-        existente.setDescricao(servico.getDescricao());
-        existente.setCategoria(servico.getCategoria());
-        existente.setPreco(servico.getPreco());
-        existente.setTelefone(servico.getTelefone());
-        existente.setUsuario(servico.getUsuario());
+        Usuario usuario = usuarioService.getUsuarioById(dto.getUsuarioId());
+
+        existente.setTitulo(dto.getTitulo());
+        existente.setDescricao(dto.getDescricao());
+        existente.setCategoria(dto.getCategoria());
+        existente.setPreco(dto.getPreco());
+        existente.setTelefone(dto.getTelefone());
+        existente.setUsuario(usuario);
+
         return repository.save(existente);
     }
 
