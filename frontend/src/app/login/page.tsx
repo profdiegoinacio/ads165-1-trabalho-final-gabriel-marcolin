@@ -103,7 +103,7 @@ export default function LoginPage() {
                             Acesso ao Sistema
                         </h1>
                         <p className="text-gray-500">
-                            Entre com suas credenciais para acessar o dashboard
+                            Entre com suas credenciais para acessar o sistema
                         </p>
                     </div>
 
