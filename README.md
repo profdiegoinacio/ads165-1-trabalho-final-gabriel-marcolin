@@ -25,12 +25,18 @@ Este projeto é uma aplicação web para gestão e contratação de serviços co
    cd backend
    ```
 
-2. Compile e execute a aplicação:
+2. Acesse o pgAdmin
+
+3. Crie o database com o nome 'comuniserv' dentro do PostgreSQL
+
+4. Ajustar username e password do banco de dados no arquivo 'application.proprieties'
+
+5. Compile e execute a aplicação:
    ```bash
    ./mvnw spring-boot:run
    ```
 
-3. A API estará disponível em:
+6. A API estará disponível em:
    ```
    http://localhost:8080
    ```
